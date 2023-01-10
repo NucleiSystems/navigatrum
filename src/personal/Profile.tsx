@@ -11,7 +11,7 @@ export default function Profile() {
   };
 
   return (
-    <>
+    <div>
       <Navbar />
       <div style={{ marginTop: 20, minHeight: 700 }}>
         <h1>Profile page</h1>
@@ -19,6 +19,6 @@ export default function Profile() {
 
         <button onClick={signOut}>sign out</button>
       </div>
-    </>
+    </div>
   );
 }

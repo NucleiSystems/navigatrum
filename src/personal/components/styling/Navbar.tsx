@@ -25,7 +25,7 @@ export default function Navbar() {
     <MDBNavbar expand="lg" light bgColor="light">
       <MDBContainer fluid>
         <MDBNavbarBrand href="#">
-          <img src={process.env.PUBLIC_URL + "/logo.png"} height="50" />
+          {/* <img src={process.env.PUBLIC_URL + "/logo.png"} height="50" /> */}
         </MDBNavbarBrand>
         <MDBInputGroup
           className="d-flex justify-content-center"
