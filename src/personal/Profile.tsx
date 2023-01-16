@@ -16,6 +16,8 @@ export default function Profile() {
       <div style={{ marginTop: 20, minHeight: 700 }}>
         <h1>Profile page</h1>
         <p>Hello there, welcome to your profile page</p>
+        <p>go to gallery?</p>
+        <button onClick={() => navigate("/gallery")}>gallery</button>
 
         <button onClick={signOut}>sign out</button>
       </div>

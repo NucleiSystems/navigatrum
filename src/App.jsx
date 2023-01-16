@@ -3,6 +3,8 @@ import { LoggedInChecker, RequireToken } from "./auth/token_handler";
 import Profile from "./personal/Profile";
 import Login from "./auth/Login";
 import LandingPage from "./LandingPage";
+import Gallery from "./personal/components/data_display/gallery";
+
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -31,6 +33,14 @@ function App() {
           element={
             <RequireToken>
               <Profile />
+            </RequireToken>
+          }
+        />
+        <Route
+          path="/gallery" // This is the profile route
+          element={
+            <RequireToken>
+              <Gallery />
             </RequireToken>
           }
         />
