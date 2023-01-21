@@ -30,10 +30,10 @@ export default function Gallery() {
         },
       }
     );
+    await requestfilesRequest();
     const data = extractFiles(response.data);
     setImages(data);
     console.log(data);
-    await requestfilesRequest();
   };
 
   useEffect(async () => {
@@ -66,9 +66,9 @@ export default function Gallery() {
                         );
                       }}
                     />
-                  </div>
-                  <div className="card-body">
-                    <p className="card-text">{image.file_name}</p>
+                    <div className="card-body">
+                      <p className="card-text">{image.file_name}</p>
+                    </div>
                   </div>
                 </div>
               </div>

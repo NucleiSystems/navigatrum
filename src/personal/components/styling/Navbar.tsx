@@ -17,14 +17,20 @@ import {
   MDBInputGroup,
   MDBInput,
 } from "mdb-react-ui-kit";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [showBasic, setShowBasic] = useState(false);
+  const navigate = useNavigate();
 
+  const signOut = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   return (
     <MDBNavbar expand="lg" light bgColor="light">
       <MDBContainer fluid>
-        <MDBNavbarBrand href="#">
+        <MDBNavbarBrand href="/profile">
           <img src={"/public/logo.png"} height="50" />
         </MDBNavbarBrand>
         <MDBInputGroup
@@ -68,10 +74,10 @@ export default function Navbar() {
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href="#">Link</MDBNavbarLink>
+              <MDBNavbarLink onClick={signOut}>sign-out</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href="#">Link</MDBNavbarLink>
+              <MDBNavbarLink href="/gallery">gallery</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
               <MDBDropdown>

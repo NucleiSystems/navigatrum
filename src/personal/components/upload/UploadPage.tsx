@@ -5,29 +5,45 @@ import axios from "axios";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { FileUploader } from "react-drag-drop-files";
 import { useDropzone } from "react-dropzone";
-export default function UploadPage() {
-  const onDrop = useCallback((acceptedFiles) => {
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
+import FormData from "form-data";
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading has failed");
-      reader.onload = () => {
-        // Do whatever you want with the file contents
-        const binaryStr = reader.result;
-        console.log(binaryStr);
-      };
-      reader.readAsArrayBuffer(file);
-      // get the file name
-      console.log(file.name);
-    });
+async function commitUpload(files) {
+  axios.post("http://127.0.0.1:8000/storage/compress/image", {
+    params: {
+      ipfs_flag: "true",
+    },
+    headers: {
+      accept: "application/json",
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+    body: files,
+  });
+}
+export default function UploadPage() {
+  const [files, setFiles] = useState([]);
+  const onDrop = useCallback((acceptedFiles) => {
+    // post the files
+    console.log(acceptedFiles);
+    setFiles(acceptedFiles);
   }, []);
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
-    <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      <p>Drag 'n' drop some files here, or click to select files</p>
+    <div>
+      <h1>Drag 'n' drop some files here, or click to select files</h1>
+      <div
+        {...getRootProps()}
+        style={{ height: "50vh", backgroundColor: "#C0C0C0" }}
+      >
+        <input {...getInputProps()} />
+      </div>
+      <button
+        onClick={() => {
+          commitUpload(files);
+        }}
+      >
+        upload your files
+      </button>
     </div>
   );
 }
