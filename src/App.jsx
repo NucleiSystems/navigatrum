@@ -5,7 +5,7 @@ import Login from "./auth/Login";
 import LandingPage from "./LandingPage";
 import Gallery from "./personal/components/data_display/gallery";
 import Upload from "./personal/components/upload/UploadPage";
-
+import Register from "./auth/register";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -29,6 +29,15 @@ function App() {
             </LoggedInChecker>
           }
         />
+        <Route
+          path="/register" // This is the login route
+          element={
+            <LoggedInChecker>
+              <Register />
+            </LoggedInChecker>
+          }
+        />
+
         <Route
           path="/profile" // This is the profile route
           element={

@@ -1,52 +1,112 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router";
 import Navbar from "../styling/Navbar";
 import axios from "axios";
-import PullToRefresh from "react-simple-pull-to-refresh";
-import { FileUploader } from "react-drag-drop-files";
-import { useDropzone } from "react-dropzone";
 import FormData from "form-data";
 
-async function commitUpload(files) {
-  axios.post("http://127.0.0.1:8000/storage/compress/image", {
-    params: {
-      ipfs_flag: "true",
-    },
-    headers: {
-      accept: "application/json",
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-    body: files,
-  });
-}
 export default function UploadPage() {
   const [files, setFiles] = useState([]);
-  const onDrop = useCallback((acceptedFiles) => {
-    // post the files
-    console.log(acceptedFiles);
-    setFiles(acceptedFiles);
-  }, []);
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setFiles(e.dataTransfer.files);
+  };
+
+  const handleUpload = () => {
+    const config = {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    };
+
+    const data = new FormData();
+    for (let i = 0; i < files.length; i++) {
+      data.append("files", files[i]);
+    }
+
+    axios
+      .post(
+        "http://localhost:8080/storage/compress/image?ipfs_flag=true",
+        data,
+        config
+      )
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
-      <h1>Drag 'n' drop some files here, or click to select files</h1>
+      <Navbar />
       <div
-        {...getRootProps()}
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={handleDrop}
         style={{ height: "50vh", backgroundColor: "#C0C0C0" }}
       >
-        <input {...getInputProps()} />
+        <p>Drop your files here</p>
       </div>
-      <button
-        onClick={() => {
-          commitUpload(files);
-        }}
-      >
-        upload your files
-      </button>
+      <button onClick={handleUpload}>Upload</button>
     </div>
   );
 }
+
+// const config = {
+//   headers: {
+//     accept: "application/json",
+//     Authorization:
+//       "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzdHJpbmcifQ.Vwku97X8LtMNavRKHP4iUdCs6JZJ8jl5Ps4H0smh4_0",
+//     "Content-Type": "multipart/form-data",
+//   },
+// };
+
+// const data = new FormData();
+// data.append("files", file, file.name);
+
+// axios
+//   .post(
+//     "http://localhost:8000/storage/compress/image?ipfs_flag=true",
+//     data,
+//     config
+//   )
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log(error);
+//   });
+
+// export default function UploadPage() {
+//   const [files, setFiles] = useState([]);
+//   const onDrop = useCallback((acceptedFiles) => {
+//     // post the files
+//     console.log(acceptedFiles);
+//     setFiles(acceptedFiles);
+//   }, []);
+//   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+
+//   return (
+//     <div>
+//       <h1>Drag 'n' drop some files here, or click to select files</h1>
+//       <div
+//         {...getRootProps()}
+//         style={{ height: "50vh", backgroundColor: "#C0C0C0" }}
+//       >
+//         <input {...getInputProps()} />
+//       </div>
+//       <button
+//         onClick={() => {
+//           commitUpload(files);
+//         }}
+//       >
+//         upload your files
+//       </button>
+//     </div>
+//   );
+// }
 
 // let files: any = [];
 // export default function UploadPage() {

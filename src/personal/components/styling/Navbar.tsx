@@ -80,6 +80,9 @@ export default function Navbar() {
               <MDBNavbarLink href="/gallery">gallery</MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
+              <MDBNavbarLink href="/upload">upload</MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
               <MDBDropdown>
                 <MDBDropdownToggle tag="a" className="nav-link">
                   Dropdown

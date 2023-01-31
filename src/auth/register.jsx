@@ -12,30 +12,29 @@ import {
   MDBInput,
 } from "mdb-react-ui-kit";
 
-export default function Login() {
+export default function Register() {
   const Navigate = useNavigate();
   let location = useLocation();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const login = async () => {
-    if (username === "" || password === "") {
+  const register = async () => {
+    if (username === "" || password === "" || email === "") {
       return;
     } else {
       const response = await axios
         .post(
-          "http://localhost:8080/users/token",
-          new URLSearchParams({
-            grant_type: "",
-            username: `${username}`,
-            password: `${password}`,
-            scope: "",
-            client_id: "",
-            client_secret: "",
-          }),
+          "http://127.0.0.1:8080/users/register",
+          {
+            email: `${username}`,
+            password: `${email}`,
+            username: `${password}`,
+          },
           {
             headers: {
               accept: "application/json",
+              "Content-Type": "application/json",
             },
           }
         )
@@ -82,7 +81,17 @@ export default function Login() {
               size="lg"
               id="email_form"
               onChange={(e) => {
-                setUsername(document.getElementById("email_form").value);
+                setEmail(document.getElementById("email_form").value);
+              }}
+            />
+            <MDBInput
+              wrapperClass="mb-4 mx-5 w-100"
+              label="Password"
+              type="password"
+              size="lg"
+              id="username_form"
+              onChange={(e) => {
+                setUsername(document.getElementById("username_form").value);
               }}
             />
             <MDBInput
@@ -98,7 +107,7 @@ export default function Login() {
 
             <MDBBtn
               className="mb-4 px-5 mx-5 w-100"
-              onClick={login}
+              onClick={register}
               color="info"
               size="lg"
             >

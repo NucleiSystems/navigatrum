@@ -11,7 +11,7 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const requestfilesRequest = async () => {
     const response = await axios.get(
-      "http://127.0.0.1:8000/data/sync/fetch/all",
+      "http://127.0.0.1:8080/data/sync/fetch/all",
       {
         headers: {
           accept: "application/json",
@@ -23,7 +23,7 @@ export default function Gallery() {
 
   const fetchRedisCache = async () => {
     const response = await axios.get(
-      "http://127.0.0.1:8000/data/sync/fetch/redis/all",
+      "http://127.0.0.1:8080/data/sync/fetch/redis/all",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -35,18 +35,20 @@ export default function Gallery() {
     setImages(data);
     console.log(data);
   };
-
-  useEffect(async () => {
+  const fetchFiles = async () => {
     await fetchRedisCache();
-    return () => {
-      console.log("This will be logged on unmount");
-    };
-  }, []);
+  };
+  useEffect(() => {
+    fetchFiles();
+  }, [localStorage.getItem("token")]);
 
   return (
     <div>
       <Navbar />
       <PullToRefresh onRefresh={requestfilesRequest}>
+        <button onClick={fetchFiles}>Fetch Files</button>
+        <button onClick={requestfilesRequest}>Request Files</button>
+
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
           <p>Here are your images</p>
@@ -58,8 +60,8 @@ export default function Gallery() {
                     <img
                       src={`data:image/png;base64,${image.file_data}`}
                       alt="Image"
-                      width="150px"
-                      height="150px"
+                      width="640px"
+                      height="360px"
                       onClick={(e) => {
                         navigate(
                           `/personal/data_display/image/${image.file_name}`
