@@ -4,6 +4,7 @@ export default function LandingPage() {
   return (
     <div>
       <h1>Landing Page</h1>
+      <h1>commit change :/</h1>
       <button
         onClick={() => {
           window.location.href = "/register";
