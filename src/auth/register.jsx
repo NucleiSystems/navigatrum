@@ -25,7 +25,7 @@ export default function Register() {
     } else {
       const response = await axios
         .post(
-          "http://127.0.0.1:8080/users/register",
+          "http://10.1.1.41/users/register",
           {
             email: `${username}`,
             password: `${email}`,
