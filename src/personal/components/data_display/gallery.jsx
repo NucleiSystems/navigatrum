@@ -11,7 +11,7 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const requestfilesRequest = async () => {
     const response = await axios.get(
-      "http://10.1.1.41:8080/data/sync/fetch/all",
+      "https://10.1.1.41:8080/data/sync/fetch/all",
       {
         headers: {
           accept: "application/json",
@@ -23,7 +23,7 @@ export default function Gallery() {
 
   const fetchRedisCache = async () => {
     const response = await axios.get(
-      "http://10.1.1.41:8080/data/sync/fetch/redis/all",
+      "https://10.1.1.41:8080/data/sync/fetch/redis/all",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
