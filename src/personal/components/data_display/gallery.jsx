@@ -11,7 +11,7 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const requestfilesRequest = async () => {
     const response = await axios.get(
-      "https://10.1.1.41:443/data/sync/fetch/all",
+      "https://rohaanerodasahmed-6xqb46r1ssg2eia9.socketxp.com/data/sync/fetch/all",
       {
         headers: {
           accept: "application/json",
@@ -23,7 +23,7 @@ export default function Gallery() {
 
   const fetchRedisCache = async () => {
     const response = await axios.get(
-      "https://10.1.1.41:443/data/sync/fetch/redis/all",
+      "https://rohaanerodasahmed-6xqb46r1ssg2eia9.socketxp.com/data/sync/fetch/redis/all",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

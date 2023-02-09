@@ -27,7 +27,7 @@ export default function UploadPage() {
 
     axios
       .post(
-        "https://10.1.1.41:443/storage/compress/image?ipfs_flag=true",
+        "https://rohaanerodasahmed-6xqb46r1ssg2eia9.socketxp.com/storage/compress/image?ipfs_flag=true",
         data,
         config
       )
