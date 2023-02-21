@@ -25,7 +25,7 @@ export default function Register() {
     } else {
       const response = await axios
         .post(
-          "https://rohaanerodasahmed-6xqb46r1ssg2eia9.socketxp.com/users/register",
+          "http://localhost:8000/users/register",
           {
             email: `${username}`,
             password: `${email}`,

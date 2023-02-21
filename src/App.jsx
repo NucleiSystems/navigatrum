@@ -6,6 +6,7 @@ import LandingPage from "./LandingPage";
 import Gallery from "./personal/components/data_display/gallery";
 import Upload from "./personal/components/upload/UploadPage";
 import Register from "./auth/register";
+import ChatRoomEntry from "./personal/components/chat_component/communicate";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
@@ -43,6 +44,14 @@ function App() {
           element={
             <RequireToken>
               <Profile />
+            </RequireToken>
+          }
+        />
+        <Route
+          path="/chat" // This is the profile route
+          element={
+            <RequireToken>
+              <ChatRoomEntry />
             </RequireToken>
           }
         />
