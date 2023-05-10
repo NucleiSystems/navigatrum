@@ -35,9 +35,11 @@ export default function Gallery() {
     setImages(data);
     console.log(data);
   };
+
   const fetchFiles = async () => {
     await fetchRedisCache();
   };
+
   useEffect(() => {
     fetchFiles();
   }, []);
