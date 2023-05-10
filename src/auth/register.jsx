@@ -23,9 +23,9 @@ export default function Register() {
     if (username === "" || password === "" || email === "") {
       return;
     } else {
-      const response = await axios
-        .post(
-          "http://localhost:8000/users/register",
+      try {
+        const response = await axios.post(
+          "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/users/register",
           {
             email: `${username}`,
             password: `${email}`,
@@ -33,22 +33,19 @@ export default function Register() {
           },
           {
             headers: {
-              accept: "application/json",
+              Accept: "application/json",
               "Content-Type": "application/json",
             },
           }
-        )
+        );
 
-        .then(async (response) => {
-          if (response.data.access_token) {
-            await setToken(response.data.access_token);
-            Navigate("/profile");
-          }
-          Promise.resolve();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+        if (response.data.access_token) {
+          await setToken(response.data.access_token);
+          Navigate("/profile");
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
   return (

@@ -24,7 +24,7 @@ export default function Login() {
     } else {
       const response = await axios
         .post(
-          "http://localhost:8000/users/token",
+          "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/users/token",
           new URLSearchParams({
             grant_type: "",
             username: `${username}`,

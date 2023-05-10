@@ -14,12 +14,15 @@ function ChatRoomEntry() {
 
   const fetchRooms = async () => {
     const response = await axios
-      .get("http://localhost:8000/chat/users/rooms", {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      .get(
+        "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/chat/users/rooms",
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
 
       .then((response) => {
         if (response.data.rooms) {
