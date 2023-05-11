@@ -31,7 +31,8 @@ export default function Gallery() {
       }
     );
     await requestfilesRequest();
-    const data = extractFiles(response.data);
+    const data = await extractFiles(response.data);
+
     setImages(data);
     console.log(data);
   };
@@ -56,23 +57,21 @@ export default function Gallery() {
           <p>Here are your images</p>
           <div className="row">
             {images.map((image) => (
-              <div className="col-md-4">
+              <div className="col-md-4" key={image.file_name}>
                 <div className="card mb-4 shadow-sm">
-                  <div className="d-flex justify-content-center">
-                    <img
-                      src={`data:image/png;base64,${image.file_data}`}
-                      alt="Image"
-                      width="640px"
-                      height="360px"
-                      onClick={(e) => {
-                        navigate(
-                          `/personal/data_display/image/${image.file_name}`
-                        );
-                      }}
-                    />
-                    <div className="card-body">
-                      <p className="card-text">{image.file_name}</p>
-                    </div>
+                  <img
+                    src={`data:image/png;base64,${image.file_data}`}
+                    alt="Image"
+                    className="card-img-top"
+                    style={{ height: "200px", objectFit: "cover" }}
+                    onClick={(e) => {
+                      navigate(
+                        `/personal/data_display/image/${image.file_name}`
+                      );
+                    }}
+                  />
+                  <div className="card-body">
+                    <p className="card-text">{image.file_name}</p>
                   </div>
                 </div>
               </div>
