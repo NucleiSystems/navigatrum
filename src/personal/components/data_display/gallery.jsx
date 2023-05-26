@@ -11,7 +11,7 @@ export default function Gallery() {
   const [images, setImages] = useState([]);
   const requestfilesRequest = async () => {
     const response = await axios.get(
-      "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/data/sync/fetch/all",
+      "https://single-orca-f1izhs.ziska44n.traefikhub.io/data/sync/fetch/all",
       {
         headers: {
           accept: "application/json",
@@ -23,7 +23,7 @@ export default function Gallery() {
 
   const fetchRedisCache = async () => {
     const response = await axios.get(
-      "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/data/sync/fetch/redis/all",
+      "https://single-orca-f1izhs.ziska44n.traefikhub.io/data/sync/fetch/redis/all",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
