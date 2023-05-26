@@ -15,7 +15,7 @@ function ChatRoomEntry() {
   const fetchRooms = async () => {
     const response = await axios
       .get(
-        "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/chat/users/rooms",
+        "https://single-orca-f1izhs.ziska44n.traefikhub.io/chat/users/rooms",
         {
           headers: {
             accept: "application/json",

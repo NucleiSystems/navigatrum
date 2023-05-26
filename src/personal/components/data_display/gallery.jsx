@@ -9,74 +9,75 @@ export default function Gallery() {
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
-  const requestfilesRequest = async () => {
-    const response = await axios.get(
-      "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/data/sync/fetch/all",
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-  };
+  const fetchData = async () => {
+    const cachedResponse = localStorage.getItem("cachedResponse");
+    if (cachedResponse) {
+      const data = await extractFiles(JSON.parse(cachedResponse));
+      setImages(data);
+    }
+    
+    try {
+      const response = await axios.get(
+        "https://single-orca-f1izhs.ziska44n.traefikhub.io/data/sync/fetch/all",
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-  const fetchRedisCache = async () => {
-    const response = await axios.get(
-      "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/data/sync/fetch/redis/all",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    await requestfilesRequest();
-    const data = await extractFiles(response.data);
-
-    setImages(data);
-    console.log(data);
-  };
-
-  const fetchFiles = async () => {
-    await fetchRedisCache();
+      localStorage.setItem("cachedResponse", JSON.stringify(response.data));
+      const data = await extractFiles(response.data);
+      setImages(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
-    fetchFiles();
+    fetchData();
   }, []);
+
+  const handleRefresh = async () => {
+    localStorage.removeItem("cachedResponse");
+    await fetchData();
+  };
 
   return (
     <div>
       <Navbar />
-      <PullToRefresh onRefresh={requestfilesRequest}>
-        <button onClick={fetchFiles}>Fetch Files</button>
-        <button onClick={requestfilesRequest}>Request Files</button>
-
+      <PullToRefresh onRefresh={handleRefresh}>
+        <button onClick={fetchData}>Fetch Files</button>
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
           <p>Here are your images</p>
-          <div className="row">
-            {images.map((image) => (
-              <div className="col-md-4" key={image.file_name}>
-                <div className="card mb-4 shadow-sm">
-                  <img
-                    src={`data:image/png;base64,${image.file_data}`}
-                    alt="Image"
-                    className="card-img-top"
-                    style={{ height: "200px", objectFit: "cover" }}
-                    onClick={(e) => {
-                      navigate(
-                        `/personal/data_display/image/${image.file_name}`
-                      );
-                    }}
-                  />
-                  <div className="card-body">
-                    <p className="card-text">{image.file_name}</p>
+          {images.length === 0 ? (
+            <p>Loading...</p>
+          ) : (
+            <div className="row">
+              {images.map((image) => (
+                <div className="col-md-4" key={image.file_name}>
+                  <div className="card mb-4 shadow-sm">
+                    <img
+                      src={`data:image/png;base64,${image.file_data}`}
+                      alt="Image"
+                      className="card-img-top"
+                      style={{ height: "200px", objectFit: "cover" }}
+                      onClick={(e) => {
+                        navigate(
+                          `/personal/data_display/image/${image.file_name}`
+                        );
+                      }}
+                    />
+                    <div className="card-body">
+                      <p className="card-text">{image.file_name}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </PullToRefresh>
     </div>

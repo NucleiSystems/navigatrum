@@ -18,6 +18,7 @@ export default function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const register = async () => {
     if (username === "" || password === "" || email === "") {
@@ -25,7 +26,7 @@ export default function Register() {
     } else {
       try {
         const response = await axios.post(
-          "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/users/register",
+          "https://single-orca-f1izhs.ziska44n.traefikhub.io/users/register",
           {
             email: `${username}`,
             password: `${email}`,
@@ -39,12 +40,11 @@ export default function Register() {
           }
         );
 
-        if (response.data.access_token) {
-          await setToken(response.data.access_token);
-          Navigate("/profile");
+        if (response.status === 200) {
+          Navigate("/login");
         }
       } catch (error) {
-        console.log(error);
+        setError(error.response);
       }
     }
   };
@@ -69,6 +69,14 @@ export default function Register() {
               style={{ letterSpacing: "1px" }}
             >
               Log in
+            </h3>
+            <h3
+              className="fw-normal mb-3 ps-5 pb-3"
+              style={{ letterSpacing: "1px" }}
+            >
+              <h3>
+                {error ? <p className="text-danger">{error}</p> : <p></p>}
+              </h3>
             </h3>
 
             <MDBInput
@@ -111,13 +119,13 @@ export default function Register() {
               Login
             </MDBBtn>
             <p className="small mb-5 pb-lg-3 ms-5">
-              <a class="text-muted" href="#!">
+              <a className="text-muted" href="#!">
                 Forgot password?
               </a>
             </p>
             <p className="ms-5">
               Don't have an account?{" "}
-              <a href="#!" class="link-info">
+              <a href="#!" className="link-info">
                 Register here
               </a>
             </p>

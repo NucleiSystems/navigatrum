@@ -27,7 +27,7 @@ export default function UploadPage() {
 
     axios
       .post(
-        "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/storage/compress/image?ipfs_flag=true",
+        "https://single-orca-f1izhs.ziska44n.traefikhub.io/storage/compress/image?ipfs_flag=true",
         data,
         config
       )

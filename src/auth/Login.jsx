@@ -24,7 +24,7 @@ export default function Login() {
     } else {
       const response = await axios
         .post(
-          "https://required-elk-gf4bb1.mbxk50ca.traefikhub.io/users/token",
+          "https://single-orca-f1izhs.ziska44n.traefikhub.io/users/token",
           new URLSearchParams({
             grant_type: "",
             username: `${username}`,
