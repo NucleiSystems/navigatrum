@@ -72,6 +72,8 @@ export default function Gallery() {
   // then check if user has files by checking this route /data/sync/fetch/user_data
   // if they dont have files then
   useEffect(() => {
+    checkIfUserHasFiles();
+
     try {
       fetchFiles();
     } catch (err) {
