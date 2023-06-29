@@ -2,7 +2,9 @@ import React, { useEffect, useState, useCallback } from "react";
 import Navbar from "../styling/Navbar";
 import axios from "axios";
 import FormData from "form-data";
-import {DropzoneArea} from 'material-ui-dropzone'
+import { FilePond, registerPlugin } from "react-filepond";
+import "filepond/dist/filepond.min.css";
+
 export default function UploadPage() {
   const [files, setFiles] = useState([]);
 
@@ -43,12 +45,17 @@ export default function UploadPage() {
     <div>
       <Navbar />
 
-        <p>Drop your files here</p>
-        <DropzoneArea
-          onChange={(files) => setFiles(files)}
-          acceptedFiles={["image/jpeg", "image/png"]}
-          maxFileSize={5000000}
-          filesLimit={15}
+      <p>Drop your files here</p>
+      <FilePond
+        files={files}
+        onupdatefiles={(fileItems) => {
+          setFiles(fileItems.map((fileItem) => fileItem.file));
+        }} /* sets the file state */
+        allowMultiple={true}
+        maxFiles={3}
+        server="/api"
+        name="files" /* sets the file input name, it's filepond by default */
+        labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
       />
       <button onClick={handleUpload}>Upload</button>
     </div>
