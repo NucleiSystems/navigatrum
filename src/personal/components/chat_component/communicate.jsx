@@ -14,15 +14,12 @@ function ChatRoomEntry() {
 
   const fetchRooms = async () => {
     const response = await axios
-      .get(
-        "https://single-orca-f1izhs.ziska44n.traefikhub.io/chat/users/rooms",
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
+      .get("https://nucleibackend.systems/chat/users/rooms", {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
 
       .then((response) => {
         if (response.data.rooms) {
@@ -46,7 +43,5 @@ function ChatRoomEntry() {
     </div>
   );
 }
-
-
 
 export default ChatRoomEntry;

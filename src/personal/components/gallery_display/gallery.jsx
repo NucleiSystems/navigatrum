@@ -6,35 +6,36 @@ import extractFiles from "./parser";
 import PullToRefresh from "react-simple-pull-to-refresh";
 
 export default function Gallery() {
-  const navigate = useNavigate();
-
   const [images, setImages] = useState([]);
-  const requestfilesRequest = async () => {
-    const response = await axios.get(
-      "https://single-orca-f1izhs.ziska44n.traefikhub.io/data/sync/fetch/all",
-      {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+  const [fetched, setFetched] = useState(false);
+
+  const requestFilesRequest = async () => {
+    await axios.get("https://nucleibackend.systems/data/sync/fetch/all", {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setFetched(true);
   };
 
   const fetchRedisCache = async () => {
     const response = await axios.get(
-      "https://single-orca-f1izhs.ziska44n.traefikhub.io/data/sync/fetch/redis/all",
+      "https://nucleibackend.systems/data/sync/fetch/redis/all",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }
     );
-    await requestfilesRequest();
-    const data = await extractFiles(response.data);
 
+    const data = await extractFiles(response.data);
     setImages(data);
     console.log(data);
+
+    if (!fetched) {
+      await requestFilesRequest();
+    }
   };
 
   const fetchFiles = async () => {
@@ -42,15 +43,19 @@ export default function Gallery() {
   };
 
   useEffect(() => {
-    fetchFiles();
-  }, []);
+    try {
+      fetchFiles();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [fetched]);
 
   return (
     <div>
       <Navbar />
-      <PullToRefresh onRefresh={requestfilesRequest}>
+      <PullToRefresh onRefresh={fetchFiles}>
         <button onClick={fetchFiles}>Fetch Files</button>
-        <button onClick={requestfilesRequest}>Request Files</button>
+        <button onClick={requestFilesRequest}>Request Files</button>
 
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
@@ -64,10 +69,8 @@ export default function Gallery() {
                     alt="Image"
                     className="card-img-top"
                     style={{ height: "200px", objectFit: "cover" }}
-                    onClick={(e) => {
-                      navigate(
-                        `/personal/data_display/image/${image.file_name}`
-                      );
+                    onTouchStart={(e) => {
+                      e.target.style.opacity = 0.5;
                     }}
                   />
                   <div className="card-body">

@@ -24,7 +24,7 @@ export default function Login() {
     } else {
       const response = await axios
         .post(
-          "https://single-orca-f1izhs.ziska44n.traefikhub.io/users/token",
+          "https://nucleibackend.systems/users/token",
           new URLSearchParams({
             grant_type: "",
             username: `${username}`,
@@ -111,7 +111,7 @@ export default function Login() {
             </p>
             <p className="ms-5">
               Don't have an account?{" "}
-              <a href="#!" class="link-info">
+              <a href="/register" class="link-info">
                 Register here
               </a>
             </p>

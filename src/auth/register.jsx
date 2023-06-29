@@ -3,14 +3,7 @@ import { useState } from "react";
 import { fetchToken, setToken } from "./token_handler";
 import axios from "axios";
 
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBIcon,
-  MDBInput,
-} from "mdb-react-ui-kit";
+import { MDBBtn, MDBRow, MDBCol, MDBIcon, MDBInput } from "mdb-react-ui-kit";
 
 export default function Register() {
   const Navigate = useNavigate();
@@ -24,30 +17,38 @@ export default function Register() {
     if (username === "" || password === "" || email === "") {
       return;
     } else {
-      try {
-        const response = await axios.post(
-          "https://single-orca-f1izhs.ziska44n.traefikhub.io/users/register",
-          {
-            email: `${username}`,
-            password: `${email}`,
-            username: `${password}`,
+      const response = await axios.post(
+        "https://nucleibackend.systems/users/register",
+        {
+          email: `${username}`,
+          password: `${email}`,
+          username: `${password}`,
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-          {
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          Navigate("/login");
         }
-      } catch (error) {
-        setError(error.response);
+      );
+
+      if (response.status === 200) {
+        Navigate("/login");
+      }
+      if (response.status === 400) {
+        setError(response.data.detail);
       }
     }
   };
+
+  const errorMessage = () => {
+    return (
+      <div className="border-solid border-2 border-red-500">
+        {error !== "" ? <h2>{error}</h2> : null}
+      </div>
+    );
+  };
+
   return (
     <MDBRow>
       <MDBCol sm="6">
@@ -64,11 +65,12 @@ export default function Register() {
           />
         ) : (
           <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
+            {errorMessage}
             <h3
               className="fw-normal mb-3 ps-5 pb-3"
               style={{ letterSpacing: "1px" }}
             >
-              Log in
+              Register
             </h3>
             <h3
               className="fw-normal mb-3 ps-5 pb-3"
@@ -78,7 +80,6 @@ export default function Register() {
                 {error ? <p className="text-danger">{error}</p> : <p></p>}
               </h3>
             </h3>
-
             <MDBInput
               wrapperClass="mb-4 mx-5 w-100"
               label="Email address"
@@ -109,14 +110,13 @@ export default function Register() {
                 setPassword(document.getElementById("password_form").value);
               }}
             />
-
             <MDBBtn
               className="mb-4 px-5 mx-5 w-100"
               onClick={register}
               color="info"
               size="lg"
             >
-              Login
+              Register
             </MDBBtn>
             <p className="small mb-5 pb-lg-3 ms-5">
               <a className="text-muted" href="#!">
@@ -124,9 +124,9 @@ export default function Register() {
               </a>
             </p>
             <p className="ms-5">
-              Don't have an account?{" "}
-              <a href="#!" className="link-info">
-                Register here
+              Already have an account?{" "}
+              <a href="/login" className="link-info">
+                Login Here
               </a>
             </p>
           </div>

@@ -3,7 +3,7 @@ import { LoggedInChecker, RequireToken } from "./auth/token_handler";
 import Profile from "./personal/Profile";
 import Login from "./auth/Login";
 import LandingPage from "./LandingPage";
-import Gallery from "./personal/components/data_display/gallery";
+import Gallery from "./personal/components/gallery_display/gallery";
 import Upload from "./personal/components/upload/UploadPage";
 import Register from "./auth/register";
 import ChatRoomEntry from "./personal/components/chat_component/communicate";
@@ -15,23 +15,25 @@ function App() {
     <div className="App">
       <Routes>
         <Route
-          path="/" // This is the default route
+          path="/" 
           element={
             <LoggedInChecker>
               <LandingPage />
             </LoggedInChecker>
           }
         />
+
         <Route
-          path="/login" // This is the login route
+          path="/login" 
           element={
             <LoggedInChecker>
               <Login />
             </LoggedInChecker>
           }
         />
+
         <Route
-          path="/register" // This is the login route
+          path="/register" 
           element={
             <LoggedInChecker>
               <Register />
@@ -40,37 +42,41 @@ function App() {
         />
 
         <Route
-          path="/profile" // This is the profile route
+          path="/profile" 
           element={
             <RequireToken>
               <Profile />
             </RequireToken>
           }
         />
+
         <Route
-          path="/chat" // This is the profile route
+          path="/chat" 
           element={
             <RequireToken>
               <ChatRoomEntry />
             </RequireToken>
           }
         />
+
         <Route
-          path="/gallery" // This is the profile route
+          path="/gallery" 
           element={
             <RequireToken>
               <Gallery />
             </RequireToken>
           }
         />
+
         <Route
-          path="/upload" // This is the profile route
+          path="/upload" 
           element={
             <RequireToken>
               <Upload />
             </RequireToken>
           }
         />
+
       </Routes>
     </div>
   );

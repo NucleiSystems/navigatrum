@@ -1,6 +1,7 @@
 import React from "react";
+import axios from "axios";
+
 import { useLocation, Navigate } from "react-router-dom";
-/* eslint-disable no-unused-expressions */
 
 export const setToken = (token: string) => {
   localStorage.setItem("token", token);
@@ -28,4 +29,22 @@ export const LoggedInChecker = ({ children: child }: any) => {
     return <Navigate to="/profile" state={{ from: location }} />;
   }
   return child;
+};
+
+export const LoginInspector = async () => {
+  let token = fetchToken()
+  const tokenChecker = await axios.post(
+    "https://single-orca-f1izhs.ziska44n.traefikhub.io/users/token/check",
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      token: `${localStorage.getItem("token")}`
+    }
+  ).then(
+    (response=>{
+      console.log(response.data)
+    })
+  )
 };
