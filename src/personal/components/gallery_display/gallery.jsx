@@ -8,6 +8,8 @@ import PullToRefresh from "react-simple-pull-to-refresh";
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [fetched, setFetched] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const [FilesExist, setFilesExist] = useState(false);
 
   const requestFilesRequest = async () => {
     await axios.get("https://nucleibackend.systems/data/sync/fetch/all", {
@@ -41,7 +43,34 @@ export default function Gallery() {
   const fetchFiles = async () => {
     await fetchRedisCache();
   };
-
+  const checkIfUserHasFiles = async () => {
+    const redis_response = await axios.get(
+      "https://nucleibackend.systems/data/sync/fetch/redis/all",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (redis_response.data.length > 0) {
+      setFilesExist(true);
+    }
+    const user_data_response = await axios.get(
+      "https://nucleibackend.systems/data/sync/fetch/user_data",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    if (user_data_response.data.length > 0) {
+      setFilesExist(true);
+    } else {
+      setFilesExist(false);
+    }
+  };
+  // then check if user has files by checking this route /data/sync/fetch/user_data
+  // if they dont have files then
   useEffect(() => {
     try {
       fetchFiles();
@@ -64,6 +93,8 @@ export default function Gallery() {
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
           <p>Here are your images</p>
+          <p>{FilesExist ? "Files Exist" : "Files Dont Exist"}</p>
+
           <div className="row">
             {images.map((image) => (
               <div className="col-md-4" key={image.file_name}>

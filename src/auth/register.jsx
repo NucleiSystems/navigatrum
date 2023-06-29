@@ -42,6 +42,7 @@ export default function Register() {
   };
 
   const errorMessage = () => {
+    console.log(error);
     return (
       <div className="border-solid border-2 border-red-500">
         {error !== "" ? <h2>{error}</h2> : null}
@@ -65,7 +66,7 @@ export default function Register() {
           />
         ) : (
           <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
-            {errorMessage}
+            <h1>{errorMessage}</h1>
             <h3
               className="fw-normal mb-3 ps-5 pb-3"
               style={{ letterSpacing: "1px" }}
