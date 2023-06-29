@@ -3,7 +3,7 @@ import axios from "axios";
 
 import { useLocation, Navigate } from "react-router-dom";
 
-export const setToken = (token: string) => {
+export const setToken = (token) => {
   localStorage.setItem("token", token);
 };
 
@@ -11,7 +11,7 @@ export const fetchToken = () => {
   return localStorage.getItem("token");
 };
 
-export const RequireToken = ({ children: child }: any) => {
+export const RequireToken = ({ children: child }) => {
   let auth = fetchToken();
   let location = useLocation();
 
@@ -21,7 +21,7 @@ export const RequireToken = ({ children: child }: any) => {
   return child;
 };
 
-export const LoggedInChecker = ({ children: child }: any) => {
+export const LoggedInChecker = ({ children: child }) => {
   let auth = fetchToken();
   let location = useLocation();
 

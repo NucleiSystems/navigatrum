@@ -53,7 +53,11 @@ export default function Gallery() {
   return (
     <div>
       <Navbar />
-      <PullToRefresh onRefresh={fetchFiles}>
+      <PullToRefresh
+        onRefresh={() => {
+          console.log("hello");
+        }}
+      >
         <button onClick={fetchFiles}>Fetch Files</button>
         <button onClick={requestFilesRequest}>Request Files</button>
 
