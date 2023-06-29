@@ -3,10 +3,16 @@ import Navbar from "../styling/Navbar";
 import axios from "axios";
 import FormData from "form-data";
 import { FilePond, registerPlugin } from "react-filepond";
-import "filepond/dist/filepond.min.css";
+import "filepond/dist/filepond.css";
+import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
+import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadPage() {
   const [files, setFiles] = useState([]);
+  const [completion, setCompletion] = useState(0);
+  const navigate = useNavigate();
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -35,6 +41,10 @@ export default function UploadPage() {
       )
       .then((response) => {
         console.log(response.data);
+        // if response code is 200, redirect to gallery
+        if (response.status === 200) {
+          navigate("/gallery");
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -44,7 +54,6 @@ export default function UploadPage() {
   return (
     <div>
       <Navbar />
-
       <p>Drop your files here</p>
       <FilePond
         files={files}
@@ -52,8 +61,7 @@ export default function UploadPage() {
           setFiles(fileItems.map((fileItem) => fileItem.file));
         }} /* sets the file state */
         allowMultiple={true}
-        maxFiles={3}
-        server="/api"
+        maxFiles={15}
         name="files" /* sets the file input name, it's filepond by default */
         labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
       />
