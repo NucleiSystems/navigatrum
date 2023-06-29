@@ -12,6 +12,13 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const validateEmail = (email) => {
+    const re = /\S+@\S+\.\S+/;
+    if (re.test(email)) {
+      return true;
+    }
+    return false;
+  };
 
   const register = async () => {
     if (username === "" || password === "" || email === "") {
@@ -66,7 +73,6 @@ export default function Register() {
           />
         ) : (
           <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
-            <h1>{errorMessage}</h1>
             <h3
               className="fw-normal mb-3 ps-5 pb-3"
               style={{ letterSpacing: "1px" }}
@@ -82,13 +88,18 @@ export default function Register() {
               </h3>
             </h3>
             <MDBInput
-              wrapperClass="mb-4 mx-5 w-100"
+              wrapperClass="mb-4 mx-5 w-100 "
               label="Email address"
               type="email"
               size="lg"
               id="email_form"
               onChange={(e) => {
-                setEmail(document.getElementById("email_form").value);
+                if (
+                  !validateEmail(document.getElementById("email_form").value)
+                ) {
+                  setEmail(document.getElementById("email_form").value);
+                }
+                setError("Invalid email address");
               }}
             />
             <MDBInput

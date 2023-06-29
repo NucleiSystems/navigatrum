@@ -69,8 +69,6 @@ export default function Gallery() {
       setFilesExist(false);
     }
   };
-  // then check if user has files by checking this route /data/sync/fetch/user_data
-  // if they dont have files then
   useEffect(() => {
     checkIfUserHasFiles();
 
@@ -95,7 +93,11 @@ export default function Gallery() {
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
           <p>Here are your images</p>
-          <p>{FilesExist ? "Files Exist" : "Files Dont Exist"}</p>
+          <p>
+            {FilesExist
+              ? "Files Exist"
+              : "You dont have any files uploaded, <a href='https://nucleisystems.vercel.app/upload'>click here</a> to upload your first files"}
+          </p>
 
           <div className="row">
             {images.map((image) => (
