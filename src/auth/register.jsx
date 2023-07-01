@@ -14,10 +14,7 @@ export default function Register() {
   const [error, setError] = useState("");
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
-    if (re.test(email)) {
-      return true;
-    }
-    return false;
+    return !!re.test(email);
   };
 
   const register = async () => {
@@ -27,9 +24,9 @@ export default function Register() {
       const response = await axios.post(
         "https://nucleibackend.systems/users/register",
         {
-          email: `${username}`,
-          password: `${email}`,
-          username: `${password}`,
+          email: `${email}`,
+          username: `${username}`,
+          password: `${password}`,
         },
         {
           headers: {
@@ -104,8 +101,8 @@ export default function Register() {
             />
             <MDBInput
               wrapperClass="mb-4 mx-5 w-100"
-              label="Password"
-              type="password"
+              label="username"
+              type="username"
               size="lg"
               id="username_form"
               onChange={(e) => {
