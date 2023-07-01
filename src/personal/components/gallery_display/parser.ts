@@ -16,16 +16,15 @@ async function decompressData(base64EncodedData) {
 }
 
 export default async function extractFiles(json_file) {
-  let files: any[] = [];
+  let files = [];
   let user_id = Object.keys(json_file.files)[0];
-  for (const key of Object.keys(json_file.files[user_id])) {
-    let base64_string = json_file.files[user_id][key];
-
-    let new_base64_string =
-      json_file.files[user_id][key][Object.keys(base64_string).toString()];
-    let file_data = await decompressData(new_base64_string);
-    let file_name = Object.keys(base64_string).toString();
-    files.push({ file_name, file_data });
+  for (const obj of json_file.files[user_id]) {
+    let file_name = Object.keys(obj)[0];
+    let file_bytes = obj[file_name];
+    let data = obj.data;
+    let file_data = await decompressData(file_bytes);
+    let id = data.id; // Extract the 'id' property from the 'data' object
+    files.push({ file_name, file_bytes, data, file_data, id }); // Include 'id' in the object
   }
   console.log(files);
   return files;

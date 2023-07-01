@@ -77,7 +77,7 @@ export default function Gallery() {
     } catch (err) {
       console.log(err);
     }
-  }, [fetched]);
+  }, []);
 
   return (
     <div>
@@ -95,8 +95,8 @@ export default function Gallery() {
           <p>Here are your images</p>
           <p>
             {FilesExist
-              ? "Files Exist"
-              : "You dont have any files uploaded, <a href='https://nucleisystems.vercel.app/upload'>click here</a> to upload your first files"}
+              ? console.log("Files Exist")
+              : "You have no files, please upload some files to view them here."}
           </p>
 
           <div className="row">
@@ -114,6 +114,12 @@ export default function Gallery() {
                   />
                   <div className="card-body">
                     <p className="card-text">{image.file_name}</p>
+                    <p className="card-text">ID: {image.id}</p>{" "}
+                    {/* Display the ID */}
+                    <button onClick={() => handleDelete(image.id)}>
+                      Delete
+                    </button>{" "}
+                    {/* Call a delete function */}
                   </div>
                 </div>
               </div>
