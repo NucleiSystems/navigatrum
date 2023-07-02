@@ -11,4 +11,9 @@ export default defineConfig({
 
     // add the commonjs plugin here
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {},
+    },
+  },
 });

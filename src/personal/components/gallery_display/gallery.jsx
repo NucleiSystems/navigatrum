@@ -4,7 +4,7 @@ import Navbar from "../styling/Navbar";
 import axios from "axios";
 import extractFiles from "./parser";
 import PullToRefresh from "react-simple-pull-to-refresh";
-
+import "./file_gallery.scss";
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [fetched, setFetched] = useState(false);
@@ -93,33 +93,44 @@ export default function Gallery() {
         <div style={{ marginTop: 20, minHeight: 700 }}>
           <h1>Gallery</h1>
           <p>Here are your images</p>
-          <p>
-            {FilesExist
-              ? console.log("Files Exist")
-              : "You have no files, please upload some files to view them here."}
-          </p>
+          {FilesExist ? (
+            <p>Files Exist</p>
+          ) : (
+            <p>
+              You have no files, please upload some files to view them here.
+            </p>
+          )}
 
-          <div className="row">
+          <div className="image-container">
             {images.map((image) => (
-              <div className="col-md-4" key={image.file_name}>
-                <div className="card mb-4 shadow-sm">
-                  <img
-                    src={`data:image/png;base64,${image.file_data}`}
-                    alt="Image"
-                    className="card-img-top"
-                    style={{ height: "200px", objectFit: "cover" }}
-                    onTouchStart={(e) => {
-                      e.target.style.opacity = 0.5;
-                    }}
-                  />
-                  <div className="card-body">
-                    <p className="card-text">{image.file_name}</p>
-                    <p className="card-text">ID: {image.id}</p>{" "}
-                    {/* Display the ID */}
-                    <button onClick={() => handleDelete(image.id)}>
+              <div className="image-card" key={image.file_name}>
+                <img
+                  src={`data:image/png;base64,${image.file_data}`}
+                  alt="Image"
+                  className="image-tag"
+                  onTouchStart={(e) => {
+                    e.target.style.opacity = 0.5;
+                  }}
+                />
+                <div className="card-body">
+                  <p className="card-text" style={{ margin: 0 }}>
+                    {image.file_name}
+                  </p>
+                  <div>
+                    <button
+                      onClick={() => handleDelete(image.id)}
+                      style={{ display: "none" }}
+                    >
                       Delete
-                    </button>{" "}
-                    {/* Call a delete function */}
+                    </button>
+                    <button
+                      className="ellipsis-button"
+                      onClick={() => console.log("Ellipsis button clicked")}
+                    >
+                      <span className="dot">.</span>
+                      <span className="dot">.</span>
+                      <span className="dot">.</span>
+                    </button>
                   </div>
                 </div>
               </div>

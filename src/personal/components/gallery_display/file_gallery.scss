@@ -1,0 +1,10 @@
+image-container{
+    display: flexbox;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+image-tag {
+    height: 50px;
+    width: 50px;
+}

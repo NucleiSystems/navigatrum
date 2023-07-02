@@ -22,20 +22,18 @@ export default function Login() {
     if (username === "" || password === "") {
       return;
     } else {
-      const response = await axios
+      axios
         .post(
           "https://nucleibackend.systems/users/token",
-          new URLSearchParams({
-            grant_type: "",
-            username: `${username}`,
-            password: `${password}`,
-            scope: "",
-            client_id: "",
-            client_secret: "",
-          }),
+          `grant_type=&username=${encodeURIComponent(
+            username
+          )}&password=${encodeURIComponent(
+            password
+          )}&scope=&client_id=&client_secret=`,
           {
             headers: {
               accept: "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
             },
           }
         )
