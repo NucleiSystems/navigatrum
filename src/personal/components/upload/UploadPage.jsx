@@ -11,11 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function UploadPage() {
   const [files, setFiles] = useState([]);
-  const [completion, setCompletion] = useState(0);
   const navigate = useNavigate();
   const headers = {
     Accept: "application/json",
-    "Content-Type": "application/json",
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   };
   const handleDrop = (e) => {

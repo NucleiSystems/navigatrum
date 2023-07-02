@@ -18,7 +18,7 @@ export default function Profile() {
         <h1>Profile page</h1>
         <p>Hello there, welcome to your profile page</p>
         <p>go to gallery?</p>
-        <button onClick={navigate("/gallery")}>gallery</button>
+        <button onClick={() => navigate("/gallery")}>gallery</button>
         <button onClick={LoginInspector}>check</button>
         <button onClick={signOut}>sign out</button>
       </div>
