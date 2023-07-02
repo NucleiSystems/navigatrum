@@ -10,13 +10,14 @@ export default function Gallery() {
   const [fetched, setFetched] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [FilesExist, setFilesExist] = useState(false);
-
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  };
   const requestFilesRequest = async () => {
     await axios.get("https://nucleibackend.systems/data/sync/fetch/all", {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
+      headers: headers,
     });
     setFetched(true);
   };
@@ -25,9 +26,7 @@ export default function Gallery() {
     const response = await axios.get(
       "https://nucleibackend.systems/data/sync/fetch/redis/all",
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: headers,
       }
     );
 
@@ -47,9 +46,7 @@ export default function Gallery() {
     const redis_response = await axios.get(
       "https://nucleibackend.systems/data/sync/fetch/redis/all",
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: headers,
       }
     );
     if (redis_response.data.length > 0) {
@@ -58,9 +55,7 @@ export default function Gallery() {
     const user_data_response = await axios.get(
       "https://nucleibackend.systems/data/sync/fetch/user_data",
       {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+        headers: headers,
       }
     );
     if (user_data_response.data.length > 0) {

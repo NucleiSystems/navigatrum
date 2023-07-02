@@ -13,7 +13,11 @@ export default function UploadPage() {
   const [files, setFiles] = useState([]);
   const [completion, setCompletion] = useState(0);
   const navigate = useNavigate();
-
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  };
   const handleDrop = (e) => {
     e.preventDefault();
     setFiles(e.dataTransfer.files);
@@ -21,16 +25,12 @@ export default function UploadPage() {
 
   const handleUpload = () => {
     const config = {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        "Content-Type": "multipart/form-data",
-      },
+      headers: headers,
     };
 
     const data = new FormData();
-    for (let i = 0; i < files.length; i++) {
-      data.append("files", files[i]);
+    for (const element of files) {
+      data.append("files", element);
     }
 
     axios
