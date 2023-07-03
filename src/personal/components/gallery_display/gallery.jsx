@@ -9,8 +9,6 @@ import "./file_gallery.scss";
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [fetched, setFetched] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
-  const [FilesExist, setFilesExist] = useState(false);
   const [redisCacheLoaded, setRedisCacheLoaded] = useState(false);
   const [userFilesFetched, setUserFilesFetched] = useState(false);
 
@@ -19,7 +17,15 @@ export default function Gallery() {
     "Content-Type": "application/json",
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   };
-
+  const requestFilesRequest = async () => {
+    await axios.get("https://nucleibackend.systems/data/sync/fetch/all", {
+      headers: {
+        accept: "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    setFetched(true);
+  };
   const fetchRedisCache = async () => {
     if (redisCacheLoaded) {
       return;
@@ -46,7 +52,7 @@ export default function Gallery() {
     await fetchRedisCache();
   };
 
-  const checkIfUserHasFiles = async () => {
+  const sync_files = async () => {
     const redis_response = await axios.get(
       "https://nucleibackend.systems/data/sync/fetch/redis/all",
       {
@@ -62,7 +68,7 @@ export default function Gallery() {
         headers: headers,
       }
     );
-    if (user_data_response.data.length > 0) {
+    if (user_data_response.data.length > redis_response.data.length) {
       setFilesExist(true);
     } else {
       setFilesExist(false);
@@ -76,7 +82,7 @@ export default function Gallery() {
     }
 
     if (!userFilesFetched) {
-      checkIfUserHasFiles();
+      sync_files();
     }
 
     try {
