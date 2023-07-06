@@ -7,10 +7,12 @@ import PullToRefresh from "react-simple-pull-to-refresh";
 import "./file_gallery.scss";
 
 export default function Gallery() {
-  const [images, setImages] = useState([]);
-  const [fetched, setFetched] = useState(false);
-  const [redisCacheLoaded, setRedisCacheLoaded] = useState(false);
-  const [userFilesFetched, setUserFilesFetched] = useState(false);
+  const [images, setImages] = useState<any[]>([]);
+  const [fetched, setFetched] = useState<Boolean>(false);
+  const [refreshing, setRefreshing] = useState<Boolean>(false);
+  const [FilesExist, setFilesExist] = useState<Boolean>(false);
+  const [redisCacheLoaded, setRedisCacheLoaded] = useState<Boolean>(false);
+  const [userFilesFetched, setUserFilesFetched] = useState<Boolean>(false);
 
   const headers = {
     Accept: "application/json",
@@ -113,9 +115,6 @@ export default function Gallery() {
                   src={`data:image/png;base64,${image.file_data}`}
                   alt="Image"
                   className="image-container"
-                  onTouchStart={(e) => {
-                    e.target.style.opacity = 0.5;
-                  }}
                 />
                 <div className="image-div-card">
                   <p className="image-div-text" style={{ margin: 0 }}>
@@ -123,7 +122,7 @@ export default function Gallery() {
                   </p>
                   <div>
                     <button
-                      onClick={() => handleDelete(image.id)}
+                      // onClick={() => handleDelete(image.id)}
                       style={{ display: "none" }}
                     >
                       Delete

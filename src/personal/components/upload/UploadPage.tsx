@@ -1,22 +1,20 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState } from "react";
 import Navbar from "../styling/Navbar";
 import axios from "axios";
 import FormData from "form-data";
-import { FilePond, registerPlugin } from "react-filepond";
+import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.css";
-import FilePondPluginImageExifOrientation from "filepond-plugin-image-exif-orientation";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css";
 import { useNavigate } from "react-router-dom";
 
 export default function UploadPage() {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles]: any[] = useState([]);
   const navigate = useNavigate();
   const headers = {
     Accept: "application/json",
     Authorization: `Bearer ${localStorage.getItem("token")}`,
   };
-  const handleDrop = (e) => {
+  const handleDrop = (e: any) => {
     e.preventDefault();
     setFiles(e.dataTransfer.files);
   };

@@ -9,13 +9,14 @@ import Register from "./auth/register";
 import ChatRoomEntry from "./personal/components/chat_component/communicate";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import React from "react";
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route
-          path="/" 
+          path="/"
           element={
             <LoggedInChecker>
               <LandingPage />
@@ -24,7 +25,7 @@ function App() {
         />
 
         <Route
-          path="/login" 
+          path="/login"
           element={
             <LoggedInChecker>
               <Login />
@@ -33,7 +34,7 @@ function App() {
         />
 
         <Route
-          path="/register" 
+          path="/register"
           element={
             <LoggedInChecker>
               <Register />
@@ -42,7 +43,7 @@ function App() {
         />
 
         <Route
-          path="/profile" 
+          path="/profile"
           element={
             <RequireToken>
               <Profile />
@@ -51,7 +52,7 @@ function App() {
         />
 
         <Route
-          path="/chat" 
+          path="/chat"
           element={
             <RequireToken>
               <ChatRoomEntry />
@@ -60,7 +61,7 @@ function App() {
         />
 
         <Route
-          path="/gallery" 
+          path="/gallery"
           element={
             <RequireToken>
               <Gallery />
@@ -69,14 +70,13 @@ function App() {
         />
 
         <Route
-          path="/upload" 
+          path="/upload"
           element={
             <RequireToken>
               <Upload />
             </RequireToken>
           }
         />
-
       </Routes>
     </div>
   );
