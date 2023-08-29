@@ -1,47 +1,64 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useLocation, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import store from "../store";
 
-export const setToken = (token) => {
-  localStorage.setItem("token", token);
+export const setToken = async (token: string): Promise<string | void> => {
+  return await localStorage.setItem("token", token);
 };
 
-export const fetchToken = () => {
-  return localStorage.getItem("token");
+export const setTokenExpire = async (
+  expiretime: string
+): Promise<string | void> => {
+  return await localStorage.setItem("token-expire", expiretime);
 };
 
-export const RequireToken = ({ children: child }) => {
-  let auth = fetchToken();
-  let location = useLocation();
-
-  if (!auth) {
-    return <Navigate to="/login" state={{ from: location }} />;
-  }
-  return child;
-};
-
-export const LoggedInChecker = ({ children: child }) => {
-  let auth = fetchToken();
-  let location = useLocation();
-
-  if (auth) {
-    return <Navigate to="/profile" state={{ from: location }} />;
-  }
-  return child;
-};
-
-export const LoginInspector = async () => {
-  let token = fetchToken();
-  const tokenChecker = await axios
-    .post("https://nucleibackend.systems/users/token/check", {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      token: `${localStorage.getItem("token")}`,
+const refreshToken = async (token: string) => {
+  const response = await axios.post(
+    "http://localhost:8000/users/refresh",
+    new URLSearchParams({
+      token: token,
     })
-    .then((response) => {
-      console.log(response.data);
-    });
+  );
+};
+
+export const fetchToken = async (): Promise<string> => {
+  const token = useSelector((state) => state.token.token);
+  const dispatch = useDispatch();
+  const tokenState = useSelector((state) => {
+    state.token.token;
+  });
+
+  const tokenFromStorage = await localStorage.getItem("token");
+  // const refreshedToken = await refreshToken(tokenFromStorage);
+
+  return tokenFromStorage;
+};
+
+export const PrivRoutes = ({ children: child }: { children: any }) => {
+  const navigation = useNavigate();
+  const isLoggedIn = store.getState().token.isLoggedin;
+
+  if (isLoggedIn === false) {
+    return navigation("/login");
+  } else {
+    return child;
+  }
+};
+
+export const NonPrivRoutes = ({ children: child }: { children: any }) => {
+  const auth = fetchToken();
+  const isLoggedIn = store.getState().token.isLoggedin;
+  const location = useLocation();
+  const navigation = useNavigate();
+
+  if (isLoggedIn) {
+    navigation("/dashboard", { state: location });
+  } else {
+    return child;
+  }
 };

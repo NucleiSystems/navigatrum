@@ -1,24 +1,29 @@
+import { Button } from "@mui/material";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function LandingPage() {
+const landingPage = () => {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline">Landing Page</h1>
-      <h1>commit change :/</h1>
-      <button
+    <>
+      <h1>landingPage</h1>
+      <Button
         onClick={() => {
-          window.location.href = "/register";
-        }}
-      >
-        register
-      </button>
-      <button
-        onClick={() => {
-          window.location.href = "/login";
+          navigate("/login");
         }}
       >
         login
-      </button>
-    </div>
+      </Button>
+      <Button
+        onClick={() => {
+          navigate("/register");
+        }}
+      >
+        register
+      </Button>
+    </>
   );
-}
+};
+
+export default landingPage;

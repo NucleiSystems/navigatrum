@@ -1,85 +1,70 @@
-import { Routes, Route } from "react-router-dom";
-import { LoggedInChecker, RequireToken } from "./auth/token_handler";
-import Profile from "./personal/Profile";
-import Login from "./auth/Login";
-import LandingPage from "./LandingPage";
-import Gallery from "./personal/components/gallery_display/gallery";
-import Upload from "./personal/components/upload/UploadPage";
-import Register from "./auth/register";
-import ChatRoomEntry from "./personal/components/chat_component/communicate";
-import "mdb-react-ui-kit/dist/css/mdb.min.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import React from "react";
+import { NonPrivRoutes, PrivRoutes } from "./auth/token_handler";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Login from "./auth/login";
+import Register from "./auth/register";
+import LandingPage from "./landingPage.tsx";
+import "../sass/index.scss";
+import "./index.css";
+import GalleryView from "./gallery/galleryView.tsx";
+// import Priv from "./auth/priv";
+// import Logout from "./auth/logout";
+// import UserDashboard from "./wishes/userDashboard";
 
-function App() {
+const App = () => {
+  const location = useLocation();
+
   return (
     <div className="App">
       <Routes>
         <Route
           path="/"
           element={
-            <LoggedInChecker>
+            <NonPrivRoutes>
               <LandingPage />
-            </LoggedInChecker>
+            </NonPrivRoutes>
           }
         />
 
         <Route
           path="/login"
           element={
-            <LoggedInChecker>
+            <NonPrivRoutes>
               <Login />
-            </LoggedInChecker>
+            </NonPrivRoutes>
           }
         />
 
         <Route
           path="/register"
           element={
-            <LoggedInChecker>
+            <NonPrivRoutes>
               <Register />
-            </LoggedInChecker>
+            </NonPrivRoutes>
           }
         />
 
         <Route
-          path="/profile"
+          path="/dashboard"
           element={
-            <RequireToken>
-              <Profile />
-            </RequireToken>
+            <PrivRoutes>
+              <GalleryView />
+            </PrivRoutes>
           }
         />
 
+        {/*
         <Route
-          path="/chat"
+          path="/logout"
           element={
-            <RequireToken>
-              <ChatRoomEntry />
-            </RequireToken>
+            <PrivRoutes>
+              <Logout />
+            </PrivRoutes>
           }
-        />
-
-        <Route
-          path="/gallery"
-          element={
-            <RequireToken>
-              <Gallery />
-            </RequireToken>
-          }
-        />
-
-        <Route
-          path="/upload"
-          element={
-            <RequireToken>
-              <Upload />
-            </RequireToken>
-          }
-        />
+        />*/}
       </Routes>
     </div>
   );
-}
+};
 
 export default App;

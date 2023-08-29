@@ -1,155 +1,85 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { fetchToken, setToken } from "./token_handler";
+import "./styles.scss";
+import Button from "@mui/material/Button";
+import { Card, TextField } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
 import axios from "axios";
+import { useState } from "react";
 
-import { MDBBtn, MDBRow, MDBCol, MDBIcon, MDBInput } from "mdb-react-ui-kit";
-
-export default function Register() {
-  const Navigate = useNavigate();
-  let location = useLocation();
+const RegisterComponent = () => {
   const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return !!re.test(email);
-  };
+  const [email, setEmail] = useState("");
 
-  const register = async () => {
-    if (username === "" || password === "" || email === "") {
-      return;
-    } else {
-      const response = await axios.post(
-        "https://nucleibackend.systems/users/register",
-        {
-          email: `${email}`,
-          username: `${username}`,
-          password: `${password}`,
-        },
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        Navigate("/login");
-      }
-      if (response.status === 400) {
-        setError(response.data.detail);
-      }
-    }
-  };
-
-  const errorMessage = () => {
-    console.log(error);
-    return (
-      <div className="border-solid border-2 border-red-500">
-        {error !== "" ? <h2>{error}</h2> : null}
-      </div>
+  const registerUser = async (
+    username: string,
+    email: string,
+    password: string
+  ) => {
+    await axios.post(
+      "http://localhost:8000/users/register",
+      new URLSearchParams({
+        username: username,
+        email: email,
+        password: password,
+      })
     );
   };
 
   return (
-    <MDBRow>
-      <MDBCol sm="6">
-        <div className="d-flex flex-row ps-5 pt-5">
-          <MDBIcon fas icon="crow fa-3x me-3" style={{ color: "#709085" }} />
-          <span className="h1 fw-bold mb-0">Logo</span>
-        </div>
-        {fetchToken() ? (
-          <Navigate
-            to="/profile"
-            state={{
-              from: location,
-            }}
-          />
-        ) : (
-          <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
-            <h3
-              className="fw-normal mb-3 ps-5 pb-3"
-              style={{ letterSpacing: "1px" }}
-            >
-              Register
-            </h3>
-            <h3
-              className="fw-normal mb-3 ps-5 pb-3"
-              style={{ letterSpacing: "1px" }}
-            >
-              <h3>
-                {error ? <p className="text-danger">{error}</p> : <p></p>}
-              </h3>
-            </h3>
-            <MDBInput
-              wrapperClass="mb-4 mx-5 w-100 "
-              label="Email address"
-              type="email"
-              size="lg"
-              id="email_form"
-              onChange={(e) => {
-                if (
-                  !validateEmail(document.getElementById("email_form").value)
-                ) {
-                  setEmail(document.getElementById("email_form").value);
-                }
-                setError("Invalid email address");
-              }}
-            />
-            <MDBInput
-              wrapperClass="mb-4 mx-5 w-100"
+    <div className="mainContainer">
+      <Card className="regCard">
+        <CardContent>
+          <div className="contentCard">
+            <h1 className="title">Register</h1>
+            <TextField
+              required
+              className="textFields"
+              id="outlined-required"
               label="username"
-              type="username"
-              size="lg"
-              id="username_form"
+              autoComplete="current-username"
               onChange={(e) => {
-                setUsername(document.getElementById("username_form").value);
+                setUsername(e.target.value);
               }}
             />
-            <MDBInput
-              wrapperClass="mb-4 mx-5 w-100"
+
+            <TextField
+              required
+              className="textFields"
+              id="outlined-email-input"
+              label="email"
+              type="email"
+              autoComplete="current-password"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
+
+            <TextField
+              required
+              className="textFields"
+              id="outlined-password-input"
               label="Password"
               type="password"
-              size="lg"
-              id="password_form"
+              autoComplete="current-password"
               onChange={(e) => {
-                setPassword(document.getElementById("password_form").value);
+                setPassword(e.target.value);
+                console.log(password);
               }}
             />
-            <MDBBtn
-              className="mb-4 px-5 mx-5 w-100"
-              onClick={register}
-              color="info"
-              size="lg"
+
+            <Button
+              variant="contained"
+              onClick={() => {
+                registerUser(username, email, password);
+              }}
             >
               Register
-            </MDBBtn>
-            <p className="small mb-5 pb-lg-3 ms-5">
-              <a className="text-muted" href="#!">
-                Forgot password?
-              </a>
-            </p>
-            <p className="ms-5">
-              Already have an account?{" "}
-              <a href="/login" className="link-info">
-                Login Here
-              </a>
-            </p>
+            </Button>
           </div>
-        )}
-      </MDBCol>
-
-      <MDBCol sm="6" className="d-none d-sm-block px-0">
-        <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
-          alt="Login image"
-          className="w-100"
-          style={{ objectFit: "cover", objectPosition: "left" }}
-        />
-      </MDBCol>
-    </MDBRow>
+        </CardContent>
+      </Card>
+    </div>
   );
-}
+};
+
+export default RegisterComponent;

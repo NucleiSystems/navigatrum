@@ -1,130 +1,81 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { fetchToken, setToken } from "./token_handler";
+import "./styles.scss";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+
+import Button from "@mui/material/Button";
+import { Card, TextField } from "@mui/material";
+import CardContent from "@mui/material/CardContent";
 import axios from "axios";
+import { addToken, setExpire } from "../slices/tokenStore";
+import { useNavigate } from "react-router-dom";
 
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBIcon,
-  MDBInput,
-} from "mdb-react-ui-kit";
-
-export default function Login() {
-  const Navigate = useNavigate();
-  let location = useLocation();
+const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
-  const login = async () => {
-    if (username === "" || password === "") {
-      return;
-    } else {
-      axios
-        .post(
-          "https://nucleibackend.systems/users/token",
-          `grant_type=&username=${encodeURIComponent(
-            username
-          )}&password=${encodeURIComponent(
-            password
-          )}&scope=&client_id=&client_secret=`,
-          {
-            headers: {
-              accept: "application/json",
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        )
-
-        .then(async (response) => {
-          if (response.data.access_token) {
-            await setToken(response.data.access_token);
-            Navigate("/profile");
-          }
-          Promise.resolve();
+  const loginUser = async (username: string, password: string) => {
+    await axios
+      .post(
+        "https://nucleibackend.systems/users/token",
+        new URLSearchParams({
+          username: username,
+          password: password,
         })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+      )
+      .then(async (e) => {
+        console.log(e.data.access_token);
+        await dispatch(addToken(e.data.access_token));
+        await dispatch(setExpire());
+      })
+      .catch((e) => console.log(e));
   };
-  return (
-    <MDBRow>
-      <MDBCol sm="6">
-        <div className="d-flex flex-row ps-5 pt-5">
-          <MDBIcon fas icon="crow fa-3x me-3" style={{ color: "#709085" }} />
-          <span className="h1 fw-bold mb-0">Logo</span>
-        </div>
-        {fetchToken() ? (
-          <Navigate
-            to="/profile"
-            state={{
-              from: location,
-            }}
-          />
-        ) : (
-          <div className="d-flex flex-column justify-content-center h-custom-2 w-75 pt-4">
-            <h3
-              className="fw-normal mb-3 ps-5 pb-3"
-              style={{ letterSpacing: "1px" }}
-            >
-              Log in
-            </h3>
 
-            <MDBInput
-              wrapperClass="mb-4 mx-5 w-100"
-              label="Email address"
-              type="email"
-              size="lg"
-              id="email_form"
+  return (
+    <div className="mainContainer">
+      <Card className="regCard">
+        <CardContent>
+          <div className="contentCard">
+            <TextField
+              required
+              className="textFields"
+              id="outlined-required"
+              label="username"
+              autoComplete="current-username"
               onChange={(e) => {
-                setUsername(document.getElementById("email_form").value);
+                setUsername(e.target.value);
               }}
             />
-            <MDBInput
-              wrapperClass="mb-4 mx-5 w-100"
+
+            <TextField
+              required
+              className="textFields"
+              id="outlined-password-input"
               label="Password"
               type="password"
-              size="lg"
-              id="password_form"
+              autoComplete="current-password"
               onChange={(e) => {
-                setPassword(document.getElementById("password_form").value);
+                setPassword(e.target.value);
               }}
             />
 
-            <MDBBtn
-              className="mb-4 px-5 mx-5 w-100"
-              onClick={login}
-              color="info"
-              size="lg"
+            <Button
+              variant="contained"
+              onClick={() => {
+                try {
+                  loginUser(username, password);
+                } catch {
+                  console.log("there was an error");
+                }
+              }}
             >
               Login
-            </MDBBtn>
-            <p className="small mb-5 pb-lg-3 ms-5">
-              <a class="text-muted" href="#!">
-                Forgot password?
-              </a>
-            </p>
-            <p className="ms-5">
-              Don't have an account?{" "}
-              <a href="/register" class="link-info">
-                Register here
-              </a>
-            </p>
+            </Button>
           </div>
-        )}
-      </MDBCol>
-
-      <MDBCol sm="6" className="d-none d-sm-block px-0">
-        <img
-          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img3.webp"
-          alt="Login image"
-          className="w-100"
-          style={{ objectFit: "cover", objectPosition: "left" }}
-        />
-      </MDBCol>
-    </MDBRow>
+        </CardContent>
+      </Card>
+    </div>
   );
-}
+};
+
+export default LoginComponent;
