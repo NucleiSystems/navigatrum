@@ -12,8 +12,6 @@ import GalleryView from "./gallery/galleryView.tsx";
 // import UserDashboard from "./wishes/userDashboard";
 
 const App = () => {
-  const location = useLocation();
-
   return (
     <div className="App">
       <Routes>

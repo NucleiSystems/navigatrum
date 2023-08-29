@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,15 +22,10 @@ const refreshToken = async (token: string) => {
       token: token,
     })
   );
+  await localStorage.setItem("token", response.data.access_token);
 };
 
 export const fetchToken = async (): Promise<string> => {
-  const token = useSelector((state) => state.token.token);
-  const dispatch = useDispatch();
-  const tokenState = useSelector((state) => {
-    state.token.token;
-  });
-
   const tokenFromStorage = await localStorage.getItem("token");
   // const refreshedToken = await refreshToken(tokenFromStorage);
 
@@ -51,7 +44,6 @@ export const PrivRoutes = ({ children: child }: { children: any }) => {
 };
 
 export const NonPrivRoutes = ({ children: child }: { children: any }) => {
-  const auth = fetchToken();
   const isLoggedIn = store.getState().token.isLoggedin;
   const location = useLocation();
   const navigation = useNavigate();

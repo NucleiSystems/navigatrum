@@ -7,7 +7,6 @@ import { Card, TextField } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { addToken, setExpire } from "../slices/tokenStore";
-import { useNavigate } from "react-router-dom";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
