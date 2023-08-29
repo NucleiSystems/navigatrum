@@ -7,12 +7,13 @@ import { Card, TextField } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { addToken, setExpire } from "../slices/tokenStore";
+import { useNavigate } from "react-router-dom";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const loginUser = async (username: string, password: string) => {
     await axios
       .post(
@@ -23,9 +24,11 @@ const LoginComponent = () => {
         })
       )
       .then(async (e) => {
-        console.log(e.data.access_token);
-        await dispatch(addToken(e.data.access_token));
-        await dispatch(setExpire());
+        if (e.status === 200) {
+          await dispatch(addToken(e.data.access_token));
+          await dispatch(setExpire());
+          await navigate("/dashboard");
+        }
       })
       .catch((e) => console.log(e));
   };

@@ -50,9 +50,12 @@ const GalleryView = () => {
   };
 
   useEffect(() => {
-    populateStore();
-    setImages(state.files.files);
-  }, []);
+    const renderSetup = async () => {
+      await populateStore();
+      setImages(state.files.files);
+    };
+    renderSetup().catch(console.error);
+  }, [state.files.files]);
 
   return (
     <div>
