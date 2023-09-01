@@ -18,7 +18,7 @@ import {
   requestFilesRequest,
   requestRedisCache,
 } from "./filesResolver";
-import store from "../store";
+import { store } from "../store";
 import { useDispatch } from "react-redux";
 import { setFileCount, setFetched, setFiles } from "../slices/fileStore";
 import { useNavigate } from "react-router-dom";
