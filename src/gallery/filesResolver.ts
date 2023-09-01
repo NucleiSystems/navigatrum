@@ -25,6 +25,7 @@ const getUserDataAmount = async () => {
     }
   );
 };
+let secondRequestMade = false;
 
 const requestRedisCache = async () => {
   const response = await axios.get(
@@ -34,7 +35,24 @@ const requestRedisCache = async () => {
     }
   );
 
-  return await extractFiles(response.data);
+  if (response.data === null) {
+    if (!secondRequestMade) {
+      // Check if the second request has already been made
+      secondRequestMade = true; // Set the flag to true to prevent further requests
+      if ((await requestFilesRequest()).status === 202) {
+        const secondResponse = await axios.get(
+          // Use a different variable name to avoid conflict
+          "https://nucleibackend.systems/data/sync/fetch/redis/all",
+          {
+            headers: headers,
+          }
+        );
+        return await extractFiles(secondResponse.data);
+      }
+    }
+  } else {
+    return await extractFiles(response.data);
+  }
 };
 
 export { requestFilesRequest, getUserDataAmount, requestRedisCache };

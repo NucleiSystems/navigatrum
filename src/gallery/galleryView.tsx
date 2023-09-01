@@ -1,7 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "./navbar";
-import extractFiles from "./parser";
 import PullToRefresh from "react-simple-pull-to-refresh";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 
 import {
@@ -13,11 +12,7 @@ import {
   CardFooter,
 } from "@nextui-org/react";
 
-import {
-  getUserDataAmount,
-  requestFilesRequest,
-  requestRedisCache,
-} from "./filesResolver";
+import { getUserDataAmount, requestRedisCache } from "./filesResolver";
 import { store } from "../store";
 import { useDispatch } from "react-redux";
 import { setFileCount, setFetched, setFiles } from "../slices/fileStore";
@@ -27,9 +22,9 @@ const GalleryView = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [images, setImages] = useState([]);
+  const [dataFetched, setDataFetched] = useState(false); // New state variable
   const dispatch = useDispatch();
   const state = store.getState();
-  const navigate = useNavigate();
 
   const populateStore = async () => {
     const fileCount: number = (await getUserDataAmount()).data.user_data_length;
@@ -40,22 +35,26 @@ const GalleryView = () => {
 
     const formattedFiles = await requestRedisCache();
 
-    if ((await formattedFiles).length < fileCount) {
-      requestFilesRequest();
+    if (formattedFiles === null) {
+      setDataFetched(true); // Set the flag when data is fetched
       dispatch(setFetched(true));
     } else {
       dispatch(setFiles(formattedFiles));
+      setDataFetched(true); // Set the flag when data is fetched
       dispatch(setFetched(true));
     }
   };
 
   useEffect(() => {
     const renderSetup = async () => {
-      await populateStore();
+      if (!dataFetched) {
+        // Only populate the store if data hasn't been fetched yet
+        await populateStore();
+      }
       setImages(state.files.files);
     };
     renderSetup().catch(console.error);
-  }, [state.files.files]);
+  }, [state.files.files, dataFetched]); // Only trigger the effect when these dependencies change
 
   return (
     <div>
