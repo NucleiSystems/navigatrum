@@ -1,8 +1,8 @@
 import React from "react";
 import { NonPrivRoutes, PrivRoutes } from "./auth/token_handler";
 import { Routes, Route } from "react-router-dom";
-import Login from "./auth/login";
-import Register from "./auth/register";
+import LoginComponent from "./auth/login";
+import RegisterComponent from "./auth/register";
 import LandingPage from "./landingPage.tsx";
 import "../sass/index.scss";
 import "./index.css";
@@ -28,7 +28,7 @@ const App = () => {
           path="/login"
           element={
             <NonPrivRoutes>
-              <Login />
+              <LoginComponent />
             </NonPrivRoutes>
           }
         />
@@ -37,7 +37,7 @@ const App = () => {
           path="/register"
           element={
             <NonPrivRoutes>
-              <Register />
+              <RegisterComponent />
             </NonPrivRoutes>
           }
         />
