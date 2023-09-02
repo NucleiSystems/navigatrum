@@ -5,11 +5,11 @@ import commonjs from "@rollup/plugin-commonjs";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), commonjs()],
-  resolve: {
-    alias: {
-      src: "/src",
-    },
-  },
+  // resolve: {
+  //   alias: {
+  //     src: "./src",
+  //   },
+  // },
 
   css: {
     preprocessorOptions: {
