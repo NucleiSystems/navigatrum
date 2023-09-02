@@ -1,6 +1,4 @@
-import React from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 
 import { useLocation, useNavigate } from "react-router-dom";
 import { store } from "../store";
@@ -15,15 +13,15 @@ export const setTokenExpire = async (
   return await localStorage.setItem("token-expire", expiretime);
 };
 
-const refreshToken = async (token: string) => {
-  const response = await axios.post(
-    "http://localhost:8000/users/refresh",
-    new URLSearchParams({
-      token: token,
-    })
-  );
-  await localStorage.setItem("token", response.data.access_token);
-};
+// const refreshToken = async (token: string) => {
+//   const response = await axios.post(
+//     "http://localhost:8000/users/refresh",
+//     new URLSearchParams({
+//       token: token,
+//     })
+//   );
+//   await localStorage.setItem("token", response.data.access_token);
+// };
 
 export const fetchToken = async (): Promise<string> => {
   const tokenFromStorage = await localStorage.getItem("token");

@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import tokenStore, { tokenSlice } from "./slices/tokenStore";
+import tokenStore from "./slices/tokenStore";
 import fileStore from "./slices/fileStore";
 import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";

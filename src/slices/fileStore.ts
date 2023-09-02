@@ -1,15 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import filesType from "../interfaces/fileInterface";
 
-interface filesType {
-  file_name: string;
-  file_bytes: any;
-  data: any;
-  file_data: string;
-  id: any;
-}
-
-const initialState = {
-  files: [],
+export const initialState = {
+  files: <filesType>(<unknown>[]),
   fileCount: 0,
   fetched: false,
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { NonPrivRoutes, PrivRoutes } from "./auth/token_handler";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./auth/login";
 import Register from "./auth/register";
 import LandingPage from "./landingPage.tsx";

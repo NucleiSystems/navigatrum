@@ -1,8 +1,7 @@
 import { Button } from "@mui/material";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const landingPage = () => {
+const LandingPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -26,4 +25,4 @@ const landingPage = () => {
   );
 };
 
-export default landingPage;
+export default LandingPage;

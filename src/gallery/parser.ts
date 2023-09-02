@@ -1,11 +1,9 @@
 import { Buffer } from "buffer";
-import { Deflate, Inflate } from "zlibt2";
+import { Inflate } from "zlibt2";
 
-async function decompressData(base64EncodedData: string): Promise<string> {
+async function decompressData(base64EncodedData: string) {
   try {
     const data = Buffer.from(base64EncodedData, "base64");
-
-    const compressedData = data.slice(1); // Remove the compression marker (0x28)
 
     // Decompress using pako
     const uncompressedBytes = new Inflate(data);
