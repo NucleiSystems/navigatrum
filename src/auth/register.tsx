@@ -16,7 +16,7 @@ const RegisterComponent = () => {
     password: string
   ) => {
     await axios.post(
-      "http://localhost:8000/users/register",
+      "https://nucleibackend.systems/users/register",
       new URLSearchParams({
         username: username,
         email: email,
