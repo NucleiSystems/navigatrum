@@ -1,4 +1,3 @@
-import React from "react";
 import { NonPrivRoutes, PrivRoutes } from "./auth/token_handler";
 import { Routes, Route } from "react-router-dom";
 import LoginComponent from "./auth/login.tsx";
@@ -15,6 +14,7 @@ const App = () => {
   return (
     <div className="App">
       <Routes>
+        
         <Route
           path="/"
           element={
