@@ -6,15 +6,12 @@ import LandingPage from "./landingPage.tsx";
 import "../sass/index.scss";
 import "./index.css";
 import GalleryView from "./gallery/galleryView.tsx";
-// import Priv from "./auth/priv";
-// import Logout from "./auth/logout";
-// import UserDashboard from "./wishes/userDashboard";
+import Logout from "./auth/logout.tsx";
 
 const App = () => {
   return (
     <div className="App">
       <Routes>
-        
         <Route
           path="/"
           element={
@@ -51,7 +48,6 @@ const App = () => {
           }
         />
 
-        {/*
         <Route
           path="/logout"
           element={
@@ -59,7 +55,7 @@ const App = () => {
               <Logout />
             </PrivRoutes>
           }
-        />*/}
+        />
       </Routes>
     </div>
   );

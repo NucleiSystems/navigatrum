@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -15,14 +15,7 @@ import { useNavigate } from "react-router";
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const menuItems = [
-    "Dashboard",
-    "wishlists",
-    "Activity",
-    "My Settings",
-    "Help & Feedback",
-    "Log Out",
-  ];
+  const menuItems = ["Dashboard", "Log Out"];
 
   return (
     <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
@@ -34,13 +27,13 @@ const NavBar = () => {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">Wishes</p>
+          <p className="font-bold text-inherit">Nuclei</p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <p className="font-bold  text-inherit">Wishes</p>
+          <p className="font-bold  text-inherit">Nuclei</p>
         </NavbarBrand>
         <NavbarItem>
           <Link
@@ -52,35 +45,12 @@ const NavBar = () => {
             dashboard
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link
-            onClick={() => {
-              navigate("/foryou");
-            }}
-            aria-current="page"
-          >
-            For you
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Link
-            color="foreground"
-            onClick={() => {
-              navigate("/friends");
-            }}
-          >
-            Friends
-          </Link>
-        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
-        </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="warning" href="#" variant="flat">
-            msgs
+          <Button as={Link} color="warning" href="/upload" variant="bordered">
+            Upload
           </Button>
         </NavbarItem>
       </NavbarContent>
@@ -97,7 +67,7 @@ const NavBar = () => {
                   ? "danger"
                   : "foreground"
               }
-              href="#"
+              href={index === 0 ? "/dashboard" : "/logout"}
               size="lg"
             >
               {item}

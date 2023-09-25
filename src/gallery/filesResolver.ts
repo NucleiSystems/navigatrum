@@ -1,9 +1,5 @@
 import axios from "axios";
 import extractFiles from "./parser";
-import { store } from "../store";
-import { useDispatch } from "react-redux";
-
-import { setFiles, setFileCount, setFetched } from "../slices/fileStore";
 
 const headers = {
   Accept: "application/json",

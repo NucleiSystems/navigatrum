@@ -5,7 +5,6 @@ async function decompressData(base64EncodedData: string) {
   try {
     const data = Buffer.from(base64EncodedData, "base64");
 
-    // Decompress using pako
     const uncompressedBytes = new Inflate(data);
     const encodedData: string = Buffer.from(
       uncompressedBytes.decompress()
@@ -28,12 +27,11 @@ async function extractFiles(json_file) {
 
     try {
       const file_data = await decompressData(file_bytes);
-      const id = data.id; // Extract the 'id' property from the 'data' object
+      const id = data.id;
 
-      files.push({ file_name, file_bytes, data, file_data, id }); // Include 'id' in the object
+      files.push({ file_name, file_bytes, data, file_data, id });
     } catch (error) {
       console.error(`Error processing ${file_name}:`, error);
-      // You might want to handle the error scenario here as needed
     }
   }
 
