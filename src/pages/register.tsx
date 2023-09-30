@@ -1,26 +1,23 @@
-import "./styles.scss";
+import "./scss/auth_styles.scss";
 import Button from "@mui/material/Button";
 import { Card, TextField } from "@mui/material";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
 import { useState } from "react";
+import { registerRequest } from "../interfaces/authInterface";
 
 const RegisterComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const registerUser = async (
-    username: string,
-    email: string,
-    password: string
-  ) => {
+  const registerUser = async (request: registerRequest) => {
     await axios.post(
       "https://nucleibackend.systems/users/register",
       new URLSearchParams({
-        username: username,
-        email: email,
-        password: password,
+        username: request.username,
+        email: request.email,
+        password: request.password,
       })
     );
   };
@@ -70,7 +67,7 @@ const RegisterComponent = () => {
             <Button
               variant="contained"
               onClick={() => {
-                registerUser(username, email, password);
+                registerUser({ username, email, password });
               }}
             >
               Register

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import NavBar from "./navbar";
+import NavBar from "../components/navbar";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { useCallback, useEffect, useState } from "react";
 
@@ -12,11 +12,11 @@ import {
   CardFooter,
 } from "@nextui-org/react";
 
-import { getUserDataAmount, requestRedisCache } from "./filesResolver";
-import { store } from "../store";
+import { getUserDataAmount, requestRedisCache } from "../utils/filesResolver";
+import { store } from "../features/store";
 import { useDispatch } from "react-redux";
-import { setFileCount, setFetched, setFiles } from "../slices/fileStore";
-import "./styles.scss";
+import { setFileCount, setFetched, setFiles } from "../features/fileStore";
+import "./scss/gallery_styles.scss";
 import filesType from "../interfaces/fileInterface";
 
 const GalleryView = () => {
