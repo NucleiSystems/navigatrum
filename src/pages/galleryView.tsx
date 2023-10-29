@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import NavBar from "../components/navbar";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { useCallback, useEffect, useState } from "react";
@@ -13,52 +12,62 @@ import {
 } from "@nextui-org/react";
 
 import { getUserDataAmount, requestRedisCache } from "../utils/filesResolver";
-import { store } from "../features/store";
-import { useDispatch } from "react-redux";
-import { setFileCount, setFetched, setFiles } from "../features/fileStore";
 import "./scss/gallery_styles.scss";
 import filesType from "../interfaces/fileInterface";
+import { dbInstance, addFileRecord, getAll } from "../utils/dbHandler"; // Import IndexedDB functions
 
 const GalleryView = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [images, setImages] = useState<filesType[]>([]);
-  const [dataFetched, setDataFetched] = useState(false); // New state variable
-  const dispatch = useDispatch();
-  const state = store.getState();
 
   const populateStore = useCallback(async () => {
-    const fileCount: number = (await getUserDataAmount()).data.user_data_length;
-
-    if (state.files.fileCount === 0) {
-      dispatch(setFileCount(fileCount));
+    try {
+      const allItems = await getAll();
+      setImages(allItems);
+    } catch (error) {
+      console.error("Error fetching items from IndexedDB:", error);
     }
+  }, []);
 
-    const formattedFiles = await requestRedisCache();
+  const fetchDataAndPopulateDB = async () => {
+    try {
+      const data = await requestRedisCache(); // Fetch data from your API or source
+      const userDataAmount = (await getUserDataAmount()).data.user_data_length;
+      const indexedDBItems = await getAll();
 
-    if (formattedFiles === null) {
-      setDataFetched(true);
-      dispatch(setFetched(true));
-    } else {
-      dispatch(setFiles(formattedFiles));
-      setDataFetched(true);
-      dispatch(setFetched(true));
+      if (
+        userDataAmount !== (data?.length ?? 0) ||
+        userDataAmount !== indexedDBItems.length
+      ) {
+        console.log(userDataAmount !== data?.length);
+        const indexedDBItemMap = new Map(
+          indexedDBItems.map((item) => [item.id, item])
+        );
+
+        const newItems =
+          data?.filter((item) => !indexedDBItemMap.has(item.id)) ?? [];
+        for (const newItem of newItems) {
+          await addFileRecord(newItem);
+        }
+      }
+
+      await populateStore();
+    } catch (error) {
+      console.error("Error fetching and populating data:", error);
     }
-  }, [dispatch, state.files.fileCount]);
+  };
 
   useEffect(() => {
     const renderSetup = async () => {
-      if (!dataFetched) {
-        await populateStore();
-      }
-      setImages(state.files.files as unknown as filesType[]);
+      await populateStore();
     };
 
     renderSetup().catch(console.error);
-  }, [state.files.files, dataFetched, populateStore]);
+  }, [populateStore]);
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await populateStore();
+    await fetchDataAndPopulateDB(); // Fetch and populate data on refresh
     setRefreshing(false);
   };
 

@@ -1,4 +1,4 @@
-export default interface filesType {
+export default interface FilesType {
   file_name: string;
   file_bytes: string;
   data: {
@@ -8,3 +8,5 @@ export default interface filesType {
   file_data: string;
   id: string;
 }
+
+export default interface FilesRecord {}

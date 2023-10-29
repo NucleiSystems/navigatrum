@@ -14,6 +14,7 @@ import RegisterComponent from "./pages/register.tsx";
 import GalleryView from "./pages/galleryView.tsx";
 import UploadView from "./pages/uploadView.tsx";
 import Logout from "./pages/logout.tsx";
+import DbTest from "./pages/dbTester.tsx";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
   {
     path: "/logout",
     Component: Logout,
+  },
+  {
+    path: "/db",
+    Component: DbTest,
   },
 ]);
 
