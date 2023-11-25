@@ -1,15 +1,14 @@
-import { useDispatch } from "react-redux";
-import { removeToken } from "../features/tokenStore";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
-
+import { logOff } from "../components/logOff";
 const Logout = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
-    dispatch(removeToken());
+    logOff();
     navigate("/login");
   });
+
   return <div></div>;
 };
 

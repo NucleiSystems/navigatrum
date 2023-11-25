@@ -73,7 +73,6 @@ const GalleryView = () => {
 
   return (
     <div>
-      <NavBar />
       <PullToRefresh onRefresh={handleRefresh} className="pull-to-refresh">
         <div style={{ marginTop: 20, minHeight: 700 }} className="gallery-div">
           <div className="columns">
@@ -83,34 +82,15 @@ const GalleryView = () => {
                 className="images-container-card max-w-[400px]"
               >
                 <CardHeader>
-                  {
-                    <Button
-                      type="submit"
-                      color="danger"
-                      variant="bordered"
-                      size="sm"
-                      id="del-button"
-                      onMouseEnter={() => {
-                        const delButton = document.getElementById("del-button");
-                        if (delButton) {
-                          delButton.innerHTML = `
-                              ❌  ${image.file_name}
-                            `;
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        setTimeout(() => {
-                          const delButton =
-                            document.getElementById("del-button");
-                          if (delButton) {
-                            delButton.textContent = "❌";
-                          }
-                        }, 100);
-                      }}
-                    >
-                      ❌
-                    </Button>
-                  }
+                  <Button
+                    type="submit"
+                    className="bg-blue"
+                    variant="bordered"
+                    size="sm"
+                    id={`del-button${image.id}`}
+                  >
+                    {image.file_name}
+                  </Button>
                 </CardHeader>
                 <CardBody className="image-div" key={image.file_name}>
                   <Image

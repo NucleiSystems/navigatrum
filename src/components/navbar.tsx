@@ -1,24 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
+  NavbarMenuToggle,
+  NavbarMenuItem,
+  NavbarMenu,
   NavbarContent,
   NavbarItem,
   Link,
   Button,
-  NavbarMenuItem,
-  NavbarMenu,
-  NavbarMenuToggle,
 } from "@nextui-org/react";
-import { useNavigate } from "react-router";
+import { logOff } from "./logOff";
 
-const NavBar = () => {
+export default function NavBar() {
+  const menuItems = ["Dashboard", "digest"];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navigate = useNavigate();
-  const menuItems = ["Dashboard", "Log Out"];
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
-    <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      className="bg-background"
+      isBordered
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+      shouldHideOnScroll
+    >
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -27,47 +39,49 @@ const NavBar = () => {
 
       <NavbarContent className="sm:hidden pr-3" justify="center">
         <NavbarBrand>
-          <p className="font-bold text-inherit">Nuclei</p>
+          <p className="font-bold text-inherit">
+            <a href={"/"}>Nuclei</a>
+          </p>
         </NavbarBrand>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarBrand>
-          <p className="font-bold  text-inherit">Nuclei</p>
+          <p className="font-bold text-inherit">
+            <a href={"/"}>Nuclei</a>
+          </p>
         </NavbarBrand>
-        <NavbarItem>
-          <Link
-            color="foreground"
-            onClick={() => {
-              navigate("/dashboard");
-            }}
-          >
-            dashboard
+        <NavbarItem isActive>
+          <Link style={{ color: "#F7B750" }} href="/">
+            gallery
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive>
+          <Link style={{ color: "#F7B750" }} href="#">
+            Accounts
           </Link>
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent justify="end">
-        <NavbarItem>
-          <Button as={Link} color="warning" href="/upload" variant="bordered">
-            Upload
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+      <NavbarItem>
+        <Button
+          variant="bordered"
+          color="danger"
+          onClick={() => {
+            logOff();
+          }}
+        >
+          Log Off
+        </Button>
+      </NavbarItem>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
               className="w-full"
-              color={
-                index === 2
-                  ? "warning"
-                  : index === menuItems.length - 1
-                  ? "danger"
-                  : "foreground"
-              }
-              href={index === 0 ? "/dashboard" : "/logout"}
+              style={{ color: "#F7B750" }}
+              href={index === 1 ? "/transactions" : "/accounts"}
               size="lg"
             >
               {item}
@@ -77,6 +91,4 @@ const NavBar = () => {
       </NavbarMenu>
     </Navbar>
   );
-};
-
-export default NavBar;
+}

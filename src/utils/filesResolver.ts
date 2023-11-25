@@ -1,7 +1,6 @@
 import axios from "axios";
 import extractFiles from "./parser";
 import endpoints from "./endpointConfig";
-import filesType from "../interfaces/fileInterface";
 
 const headers = {
   Accept: "application/json",
@@ -35,7 +34,6 @@ const requestRedisCache = async () => {
     const fetchFilesResponse = await requestFilesRequest();
     if (fetchFilesResponse.status === 202) {
       const secondResponse = await axios.get(
-        // Use a different variable name to avoid conflict
         endpoints().endpoints.redis_fetch,
         {
           headers: headers,

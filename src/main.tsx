@@ -1,60 +1,50 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { store, persistor } from "./features/store.ts";
 import "./index.css";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../sass/index.scss";
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
-import LandingPage from "./pages/LandingPage.tsx";
 import LoginComponent from "./pages/Login.tsx";
 import RegisterComponent from "./pages/register.tsx";
 import GalleryView from "./pages/galleryView.tsx";
 import UploadView from "./pages/uploadView.tsx";
 import Logout from "./pages/logout.tsx";
-import DbTest from "./pages/dbTester.tsx";
+import AuthProvider from "./components/providers/AuthProvider.tsx";
+import LoggedOutUserProvider from "./components/providers/NonAuthProvider.tsx";
 
 const router = createBrowserRouter([
   {
+    path: "/auth/login",
+    element: <LoginComponent />,
+  },
+  {
+    path: "/auth/register",
+
+    element: (
+      <LoggedOutUserProvider>
+        <RegisterComponent />
+      </LoggedOutUserProvider>
+    ),
+  },
+  {
     path: "/",
-    Component: LandingPage,
-  },
-  {
-    path: "/login",
-    Component: LoginComponent,
-  },
-  {
-    path: "/register",
-    Component: RegisterComponent,
-  },
-  {
-    path: "/dashboard",
-    Component: GalleryView,
+    element: <AuthProvider ProtectedPage={<GalleryView />}></AuthProvider>,
   },
   {
     path: "/upload",
-    Component: UploadView,
+    element: <AuthProvider ProtectedPage={<UploadView />}></AuthProvider>,
   },
   {
     path: "/logout",
     Component: Logout,
   },
-  {
-    path: "/db",
-    Component: DbTest,
-  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <NextUIProvider>
-        <React.StrictMode>
-          <RouterProvider router={router}></RouterProvider>
-        </React.StrictMode>
-      </NextUIProvider>
-    </PersistGate>
-  </Provider>
+  <React.StrictMode>
+    <NextUIProvider>
+      <RouterProvider router={router}></RouterProvider>
+    </NextUIProvider>
+  </React.StrictMode>
 );

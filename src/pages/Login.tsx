@@ -1,20 +1,15 @@
 import "./scss/auth_styles.scss";
 
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import Button from "@mui/material/Button";
-import { Card, TextField } from "@mui/material";
-import CardContent from "@mui/material/CardContent";
 import axios from "axios";
-import { addToken, setExpire } from "../features/tokenStore";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../interfaces/authInterface";
+import { expTime, setToken, setTokenExpire } from "../utils/token_handler";
+import { Button, Card, CardBody, Input } from "@nextui-org/react";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const loginUser = (data: loginRequest) => {
@@ -28,9 +23,11 @@ const LoginComponent = () => {
       )
       .then((e) => {
         if (e.status === 200) {
-          dispatch(addToken(e.data.access_token));
-          dispatch(setExpire());
-          navigate("/dashboard");
+          (async () => {
+            await setToken(e.data.access_token);
+            await setTokenExpire(expTime().toString());
+          })();
+          navigate("/");
         }
       })
       .catch((e) => console.log(e));
@@ -39,9 +36,9 @@ const LoginComponent = () => {
   return (
     <div className="mainContainer">
       <Card className="regCard">
-        <CardContent>
+        <CardBody>
           <div className="contentCard">
-            <TextField
+            <Input
               required
               className="textFields"
               id="outlined-required"
@@ -52,7 +49,7 @@ const LoginComponent = () => {
               }}
             />
 
-            <TextField
+            <Input
               required
               className="textFields"
               id="outlined-password-input"
@@ -65,7 +62,7 @@ const LoginComponent = () => {
             />
 
             <Button
-              variant="contained"
+              variant="bordered"
               onClick={() => {
                 loginUser({
                   username,
@@ -76,7 +73,7 @@ const LoginComponent = () => {
               Login
             </Button>
           </div>
-        </CardContent>
+        </CardBody>
       </Card>
     </div>
   );
