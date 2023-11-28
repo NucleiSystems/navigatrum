@@ -22,7 +22,7 @@ const AuthProvider = ({ ProtectedPage }: any) => {
 
   if (canRender) {
     return (
-      <div className="h-screen w-screen bg-gradient-to-r from-[#4b8a47] to-[#96bd9b]">
+      <div className="h-screen h-full w-full bg-gradient-to-r from-[#4b8a47] to-[#96bd9b]">
         <NavBar />
         {ProtectedPage}
       </div>
