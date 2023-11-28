@@ -9,14 +9,14 @@ const headers = {
 };
 
 const requestFilesRequest = async () => {
-  return await axios.get(endpoints().endpoints.file_request, {
-    headers: headers,
+  return await axios.get(await endpoints().endpoints.file_request, {
+    headers: await headers,
   });
 };
 
 const getUserDataAmount = async () => {
   return await axios.get(endpoints().endpoints.user_data, {
-    headers: headers,
+    headers: await headers,
   });
 };
 
@@ -24,7 +24,7 @@ const requestRedisCache = async () => {
   const redisFetchResponse = await axios.get(
     endpoints().endpoints.redis_fetch,
     {
-      headers: headers,
+      headers: await headers,
     }
   );
 

@@ -1,4 +1,3 @@
-import NavBar from "../components/navbar";
 import PullToRefresh from "react-simple-pull-to-refresh";
 import { useCallback, useEffect, useState } from "react";
 
@@ -13,12 +12,12 @@ import {
 
 import { getUserDataAmount, requestRedisCache } from "../utils/filesResolver";
 import "./scss/gallery_styles.scss";
-import filesType from "../interfaces/fileInterface";
-import { dbInstance, addFileRecord, getAll } from "../utils/dbHandler"; // Import IndexedDB functions
+import { addFileRecord, getAll } from "../utils/dbHandler";
+import extractionOutput from "../interfaces/extractionInterface";
 
 const GalleryView = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [images, setImages] = useState<filesType[]>([]);
+  const [images, setImages] = useState<extractionOutput[]>([]);
 
   const populateStore = useCallback(async () => {
     try {
@@ -29,9 +28,9 @@ const GalleryView = () => {
     }
   }, []);
 
-  const fetchDataAndPopulateDB = async () => {
+  const fetchDataAndPopulateDB = useCallback(async () => {
     try {
-      const data = await requestRedisCache(); // Fetch data from your API or source
+      const data = await requestRedisCache();
       const userDataAmount = (await getUserDataAmount()).data.user_data_length;
       const indexedDBItems = await getAll();
 
@@ -39,7 +38,6 @@ const GalleryView = () => {
         userDataAmount !== (data?.length ?? 0) ||
         userDataAmount !== indexedDBItems.length
       ) {
-        console.log(userDataAmount !== data?.length);
         const indexedDBItemMap = new Map(
           indexedDBItems.map((item) => [item.id, item])
         );
@@ -55,7 +53,7 @@ const GalleryView = () => {
     } catch (error) {
       console.error("Error fetching and populating data:", error);
     }
-  };
+  }, [populateStore]);
 
   useEffect(() => {
     const renderSetup = async () => {
@@ -65,11 +63,24 @@ const GalleryView = () => {
     renderSetup().catch(console.error);
   }, [populateStore]);
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchDataAndPopulateDB(); // Fetch and populate data on refresh
-    setRefreshing(false);
-  };
+    try {
+      await fetchDataAndPopulateDB();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [fetchDataAndPopulateDB]);
+
+  function Uint8ToBase64(u8Arr) {
+    const CHUNK_SIZE = 0x8000;
+    let result = "";
+    for (let i = 0; i < u8Arr.length; i += CHUNK_SIZE) {
+      const chunk = u8Arr.subarray(i, i + CHUNK_SIZE);
+      result += String.fromCharCode.apply(null, chunk);
+    }
+    return btoa(result);
+  }
 
   return (
     <div>
@@ -94,7 +105,9 @@ const GalleryView = () => {
                 </CardHeader>
                 <CardBody className="image-div" key={image.file_name}>
                   <Image
-                    src={`data:image/jpg;base64,${image.file_data}`}
+                    src={`data:image/jpg;base64,${Uint8ToBase64(
+                      image.file_data
+                    )}`}
                     alt="Image"
                     radius="sm"
                     className="image-container"

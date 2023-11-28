@@ -18,7 +18,7 @@ const endpoint_object = (mode: string): EndpointObject => {
 const endpoints = (): EndpointObject => {
   if (mode === "dev") {
     return endpoint_object("localhost:8000");
-  } else {
+  } else if (mode === "prod") {
     return endpoint_object("nucleibackend.systems");
   }
 };
