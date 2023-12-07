@@ -11,7 +11,6 @@ import GalleryView from "./pages/galleryView.tsx";
 import UploadView from "./pages/uploadView.tsx";
 import Logout from "./pages/logout.tsx";
 import AuthProvider from "./components/providers/AuthProvider.tsx";
-import LoggedOutUserProvider from "./components/providers/NonAuthProvider.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +19,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth/register",
-
-    element: (
-      <LoggedOutUserProvider>
-        <RegisterComponent />
-      </LoggedOutUserProvider>
-    ),
+    element: <RegisterComponent />,
   },
   {
     path: "/",

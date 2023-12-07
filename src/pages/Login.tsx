@@ -1,11 +1,10 @@
-import "./scss/auth_styles.scss";
-
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../interfaces/authInterface";
 import { expTime, setToken, setTokenExpire } from "../utils/token_handler";
-import { Button, Card, CardBody, Input } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
+import endpoints from "../utils/endpointConfig";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
@@ -15,7 +14,7 @@ const LoginComponent = () => {
   const loginUser = (data: loginRequest) => {
     axios
       .post(
-        "https://nucleibackend.systems/users/token",
+        endpoints().endpoints.login,
         new URLSearchParams({
           username: data.username,
           password: data.password,
@@ -34,15 +33,16 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="mainContainer">
-      <Card className="regCard">
-        <CardBody>
-          <div className="contentCard">
+    <div className="flex h-screen">
+      <div className="m-auto w-screen lg:mx-auto lg:m-auto md:m-auto sm:my-auto sm:mx-5 ">
+        <Card className="m-auto lg:w-1/2 md:w-96 lg:mx-auto sm:w-full sm:text-sm sm:h-96 ">
+          <CardHeader></CardHeader>
+          <CardBody>
             <Input
               required
-              className="textFields"
+              className="lg:mt-4 md:mt-5 sm:mt-6"
               id="outlined-required"
-              label="username"
+              label="Username"
               autoComplete="current-username"
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -51,7 +51,7 @@ const LoginComponent = () => {
 
             <Input
               required
-              className="textFields"
+              className="lg:mt-4 md:mt-5 sm:mt-6"
               id="outlined-password-input"
               label="Password"
               type="password"
@@ -63,6 +63,7 @@ const LoginComponent = () => {
 
             <Button
               variant="bordered"
+              className="lg:mt-10 sm:mt-5"
               onClick={() => {
                 loginUser({
                   username,
@@ -72,9 +73,9 @@ const LoginComponent = () => {
             >
               Login
             </Button>
-          </div>
-        </CardBody>
-      </Card>
+          </CardBody>
+        </Card>
+      </div>
     </div>
   );
 };

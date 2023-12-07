@@ -27,7 +27,7 @@ const GalleryView = () => {
       console.error("Error fetching items from IndexedDB:", error);
     }
   }, []);
-
+  
   const fetchDataAndPopulateDB = useCallback(async () => {
     try {
       const data = await requestRedisCache();
