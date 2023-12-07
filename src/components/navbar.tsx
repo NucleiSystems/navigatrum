@@ -9,13 +9,16 @@ import {
   NavbarItem,
   Link,
   Button,
+  Avatar,
 } from "@nextui-org/react";
 import { logOff } from "./logOff";
+import { useNavigate } from "react-router";
 
 export default function NavBar() {
   const menuItems = ["Dashboard", "digest"];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setMounted(true);
@@ -57,23 +60,37 @@ export default function NavBar() {
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link style={{ color: "#F7B750" }} href="#">
-            Accounts
+          <Link style={{ color: "#F7B750" }} href="/upload">
+            Upload
           </Link>
         </NavbarItem>
       </NavbarContent>
-
-      <NavbarItem>
-        <Button
-          variant="bordered"
-          color="danger"
-          onClick={() => {
-            logOff();
-          }}
-        >
-          Log Off
-        </Button>
-      </NavbarItem>
+      <NavbarContent as="div" justify="end">
+        <NavbarItem>
+          <Avatar
+            isBordered
+            as="button"
+            className="transition-transform"
+            color="secondary"
+            onClick={() => {
+              navigate("/profile");
+            }}
+            size="sm"
+            src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+          />
+        </NavbarItem>
+        <NavbarItem>
+          <Button
+            variant="bordered"
+            color="danger"
+            onClick={() => {
+              logOff();
+            }}
+          >
+            Log Off
+          </Button>
+        </NavbarItem>
+      </NavbarContent>
 
       <NavbarMenu>
         {menuItems.map((item, index) => (

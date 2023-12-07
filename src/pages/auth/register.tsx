@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-import { registerRequest } from "../interfaces/authInterface";
-import endpoints from "../utils/endpointConfig";
+import { registerRequest } from "../../interfaces/authInterface";
+import endpoints from "../../utils/endpointConfig";
 import { Card, CardBody, Input, Button } from "@nextui-org/react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

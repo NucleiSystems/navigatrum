@@ -11,9 +11,12 @@ import {
   Divider,
 } from "@nextui-org/react";
 
-import { getUserDataAmount, requestRedisCache } from "../utils/filesResolver";
-import { addFileRecord, getAll } from "../utils/dbHandler";
-import extractionOutput from "../interfaces/extractionInterface";
+import {
+  getUserDataAmount,
+  requestRedisCache,
+} from "../../utils/filesResolver";
+import { addFileRecord, getAll } from "../../utils/dbHandler";
+import extractionOutput from "../../interfaces/extractionInterface";
 
 const GalleryView = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -27,7 +30,7 @@ const GalleryView = () => {
       console.error("Error fetching items from IndexedDB:", error);
     }
   }, []);
-  
+
   const fetchDataAndPopulateDB = useCallback(async () => {
     try {
       const data = await requestRedisCache();

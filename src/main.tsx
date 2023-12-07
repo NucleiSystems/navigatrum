@@ -5,12 +5,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "../sass/index.scss";
 import "./index.css";
 import { NextUIProvider } from "@nextui-org/react";
-import LoginComponent from "./pages/Login.tsx";
-import RegisterComponent from "./pages/register.tsx";
-import GalleryView from "./pages/galleryView.tsx";
-import UploadView from "./pages/uploadView.tsx";
-import Logout from "./pages/logout.tsx";
+import LoginComponent from "./pages/auth/Login.tsx";
+import RegisterComponent from "./pages/auth/register.tsx";
+import GalleryView from "./pages/dataView/galleryView.tsx";
+import ProfilePage from "./pages/profile.tsx";
+import Logout from "./pages/auth/logout.tsx";
 import AuthProvider from "./components/providers/AuthProvider.tsx";
+import UploadView from "./pages/dataView/uploadView.tsx";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
   {
     path: "/upload",
     element: <AuthProvider ProtectedPage={<UploadView />}></AuthProvider>,
+  },
+  {
+    path: "/profile",
+    element: <AuthProvider ProtectedPage={<ProfilePage />}></AuthProvider>,
   },
   {
     path: "/logout",

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../interfaces/authInterface";
-import { expTime, setToken, setTokenExpire } from "../utils/token_handler";
+import { loginRequest } from "../../interfaces/authInterface";
+import { expTime, setToken, setTokenExpire } from "../../utils/token_handler";
 import { Button, Card, CardBody, CardHeader, Input } from "@nextui-org/react";
-import endpoints from "../utils/endpointConfig";
+import endpoints from "../../utils/endpointConfig";
 
 const LoginComponent = () => {
   const [username, setUsername] = useState("");
