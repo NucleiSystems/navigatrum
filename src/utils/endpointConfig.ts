@@ -1,6 +1,6 @@
 import EndpointObject from "../interfaces/endpointsInterface";
 
-const mode: string = "dev";
+const mode: string = "prod";
 
 const endpoint_object = (mode: string): EndpointObject => {
   return {

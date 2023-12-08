@@ -24,6 +24,7 @@
     "@nextui-org/theme": "^2.0.4",
     "@rollup/plugin-commonjs": "^25.0.3",
     "filepond": "^4.30.4",
+    "filepond-plugin-image-edit": "^1.6.3",
     "filepond-plugin-image-exif-orientation": "^1.0.11",
     "filepond-plugin-image-preview": "^4.6.11",
     "framer-motion": "^10.15.0",
