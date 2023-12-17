@@ -1,26 +1,42 @@
 import axios from "axios";
 import extractFiles from "./parser";
 import endpoints from "./endpointConfig";
-
-const headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-};
+import { fetchToken } from "./tokenUtils";
 
 const requestFilesRequest = async () => {
+  const token = await fetchToken();
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   return await axios.get(await endpoints().endpoints.file_request, {
     headers: await headers,
   });
 };
 
 const getUserDataAmount = async () => {
+  const token = await fetchToken();
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   return await axios.get(endpoints().endpoints.user_data, {
     headers: await headers,
   });
 };
 
 const requestRedisCache = async () => {
+  const token = await fetchToken();
+  const headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+
   const redisFetchResponse = await axios.get(
     endpoints().endpoints.redis_fetch,
     {
@@ -36,7 +52,7 @@ const requestRedisCache = async () => {
       const secondResponse = await axios.get(
         endpoints().endpoints.redis_fetch,
         {
-          headers: headers,
+          headers: await headers,
         }
       );
       return await extractFiles(secondResponse.data);

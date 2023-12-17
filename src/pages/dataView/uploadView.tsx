@@ -67,7 +67,7 @@ const UploadView = () => {
       axios.post(endpoints().endpoints.upload, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: localStorage.getItem("token"),
         },
       });
     } catch (e) {
