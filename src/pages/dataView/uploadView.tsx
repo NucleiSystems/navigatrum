@@ -58,14 +58,14 @@ const UploadView = () => {
     setFiles(files);
   };
 
-  const fileUploadHandler = (files: []) => {
+  const fileUploadHandler = async (files: File[]) => {
     const fileForm = new FormData();
-    files.forEach((file) => {
-      fileForm.append("files", file);
+    files.forEach((file, index) => {
+      fileForm.append(`files[${index}]`, file, file.name);
     });
 
     try {
-      axios.post(endpoints().endpoints.upload, fileForm, {
+      await axios.post(endpoints().endpoints.upload, fileForm, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
