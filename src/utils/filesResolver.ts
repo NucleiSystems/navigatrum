@@ -1,7 +1,7 @@
 import axios from "axios";
 import extractFiles from "./parser";
 import endpoints from "./endpointConfig";
-import { fetchToken } from "./tokenUtils";
+import { fetchToken } from "./token_handler";
 
 const requestFilesRequest = async () => {
   const token = await fetchToken();
