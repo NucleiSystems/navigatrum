@@ -63,11 +63,12 @@ const UploadView = () => {
     files.forEach((file) => {
       fileForm.append("files", file);
     });
+
     try {
-      axios.post(endpoints().endpoints.upload, {
+      axios.post(endpoints().endpoints.upload, fileForm, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: localStorage.getItem("token"),
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
     } catch (e) {
